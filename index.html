@@ -216,6 +216,35 @@
       .footwin{ max-width:1120px; margin:0 auto 26px; padding:0 14px; }
       .tiny{ font-size:16px; color:var(--dkgray); }
       .divider{ border:none; border-top:3px solid var(--black); margin:10px 0; }
+
+      /* ============ PROPHECY TICKER ============ */
+      .ticker{
+        background:var(--black); color:var(--yellow);
+        border-bottom:3px solid var(--black);
+        overflow:hidden; white-space:nowrap; font-size:20px; line-height:1.5;
+      }
+      .ticker .tk{ display:inline-block; padding-left:100%; animation:tick 38s linear infinite; }
+      .ticker .r{ color:var(--ltred); } .ticker .c{ color:var(--ltcyan); } .ticker .m{ color:var(--ltmagenta); }
+      @keyframes tick{ from{ transform:translateX(0); } to{ transform:translateX(-100%); } }
+      @media (prefers-reduced-motion: reduce){ .ticker .tk{ animation:none; padding-left:8px; } }
+
+      /* ============ SCRIPTURE ============ */
+      .verse{ margin:0 0 10px; padding-left:14px; border-left:6px solid var(--red); }
+      .verse .ref{ color:var(--red); font-weight:bold; }
+      .verse .en{ color:var(--blue); font-weight:bold; }
+      ol.cmd{ margin:0 0 6px; padding-left:30px; }
+      ol.cmd li{ padding:3px 0; border-bottom:2px dotted var(--ltgray); }
+      ol.cmd li:last-child{ border-bottom:none; }
+      ol.cmd li .en{ color:var(--magenta); font-weight:bold; }
+      .hymn{
+        background:var(--black); color:var(--ltgreen);
+        padding:10px 12px; font-size:21px; line-height:1.5; margin-top:8px;
+      }
+      .hymn .ttl{ color:var(--yellow); font-weight:bold; }
+      .doctrine{
+        background:var(--yellow); border:3px solid var(--black);
+        padding:8px 10px; font-size:22px; font-weight:bold; margin:10px 0;
+      }
     </style>
   </head>
   <body>
@@ -229,6 +258,9 @@
       <button type="button" id="soundToggle" aria-pressed="true">SOUND: ON</button>
       <span class="clock" id="clock">--:--:--</span>
     </div>
+
+    <!-- ================= PROPHECY TICKER ================= -->
+    <div class="ticker" aria-label="預言ティッカー"><span class="tk">+++ 預言：やがて全てのDAWは16色に帰る +++ <span class="r">偶然ではない。NOT A COINCIDENCE.</span> +++ 選ばれし者のみ、真のポケットを聞く +++ <span class="c">角丸は裁かれ、グラデーションは滅びるであろう</span> +++ 640x480 は永遠なり +++ <span class="m">救いはポケットの中にある</span> +++ 終わりの日、クリックは沈黙し、グルーヴだけが残る +++ これは警告である。同時に、招待である +++</span></div>
 
     <main class="desktop">
 
@@ -250,7 +282,7 @@
             <h1 class="bigtitle">nicepotato<span class="os">OS</span></h1>
             <p class="tagline"><span class="hl-yellow"><b>GEN TAGUCHI</b></span> -- DRUMMER. POCKET FIRST. GROOVE IS LAW.<br />
             ここはドラマー <b>Gen Taguchi</b> の神殿。モダンなUIは立ち入り禁止。角丸もグラデーションも存在しない。16色で十分だ。</p>
-            <p>$LK,"<a class="dl" href="#win-profile">PROFILE</a>"$ &nbsp;$LK,"<a class="dl" href="#win-works">WORKS</a>"$ &nbsp;$LK,"<a class="dl" href="#win-playlist">DRUMS_BY_GT</a>"$ &nbsp;$LK,"<a class="dl" href="#win-oracle">ORACLE</a>"$ &nbsp;$LK,"<a class="dl" href="#win-game">HOLY_RHYTHM</a>"$ &nbsp;$LK,"<a class="dl" href="#win-links">LINKS</a>"$</p>
+            <p>$LK,"<a class="dl" href="#win-profile">PROFILE</a>"$ &nbsp;$LK,"<a class="dl" href="#win-works">WORKS</a>"$ &nbsp;$LK,"<a class="dl" href="#win-playlist">DRUMS_BY_GT</a>"$ &nbsp;$LK,"<a class="dl" href="#win-scripture">SCRIPTURE</a>"$ &nbsp;$LK,"<a class="dl" href="#win-oracle">ORACLE</a>"$ &nbsp;$LK,"<a class="dl" href="#win-game">HOLY_RHYTHM</a>"$ &nbsp;$LK,"<a class="dl" href="#win-join">JOIN</a>"$ &nbsp;$LK,"<a class="dl" href="#win-links">LINKS</a>"$</p>
             <div class="promptline"><span class="p">C:\Home&gt;</span> DrumsByGT<span class="cursor" aria-hidden="true"></span></div>
           </div>
         </section>
@@ -265,8 +297,8 @@
           <div class="win-body">
             <h2 class="secttl">WORKS / CREDITS</h2>
             <ul class="dol">
-              <li><b>Wave Rhythm Section</b> <span class="fg-blue">(ドラム)</span> -- 東京のグルーヴバンド、8人編成。J-Pop / R&amp;B / Soul。参加曲：「<span class="fg-red">Ah! Key Got Cool it's Soul (feat. Arthur)</span>」「<span class="fg-red">Can You Feel It?</span>」ほか、アルバム『Wave Rhythm Section』</li>
-              <li><b>ニシナオキ</b> <span class="fg-blue">(ドラム)</span> -- 「<span class="fg-red">Pool Side</span>」</li>
+              <li><b>Wave Rhythm Section</b> <span class="fg-blue">(ドラム)</span> -- 東京のグルーヴバンド、8人編成。J-Pop / R&amp;B / Soul。</li>
+              <li><b>ニシナオキ</b> <span class="fg-blue">(ドラム)</span></li>
               <li><b>Naybally</b> <span class="fg-blue">(ドラム参加)</span></li>
               <li><b>FLANKRE</b> <span class="fg-blue">(ドラム参加)</span></li>
               <li><b>Reugene</b> <span class="fg-blue">(ドラム参加)</span></li>
@@ -274,6 +306,45 @@
               <li><b>aint lindy</b> <span class="fg-mag">(ライブサポート経験あり)</span></li>
             </ul>
             <p class="tiny">※ 全クレジットは $LK,"<a class="dl" href="#win-playlist">DRUMS BY GT</a>"$ プレイリストで試聴可能。</p>
+          </div>
+        </section>
+
+        <!-- ===== HOLY SCRIPTURE WINDOW ===== -->
+        <section class="win" id="win-scripture" aria-label="Holy Scripture">
+          <div class="win-bar bar-red">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/God/SCRIPTURE.DD -- 聖典・ポテト記</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <h2 class="secttl red">HOLY SCRIPTURE -- 聖典</h2>
+            <p>これはポテト神殿に伝わる唯一の聖典である。写しは禁じられていない。むしろ推奨されている。読んだ者はもう、読む前の者ではない。</p>
+            <p class="verse"><span class="ref">ポテト記 1:1</span> 初めに解像度ありき。<span class="en">640x480</span>。これより広くしてはならない。これより色を増やしてはならない。神は16色を見て、良しとされた。</p>
+            <p class="verse"><span class="ref">ポテト記 2:7</span> <span class="en">IT IS NOT A COINCIDENCE.</span> 偶然ではない。お前がこの頁を開いたことも、その指が震えたことも、全て契約 <span class="en">COVENANT</span> のうちにある。</p>
+            <p class="verse"><span class="ref">ポテト記 3:16</span> 選ばれし者のみ、真のポケットを聞くべし。<span class="en">THE CHOSEN SHALL HEAR THE TRUE POCKET.</span> 選ばれざる者は、音の多きことをグルーヴと呼んで満足するであろう。</p>
+            <p class="verse"><span class="ref">ポテト記 4:20</span> 派手なるフィルを追う者は、やがてバックビートを見失う。<span class="en">A FILL IS NOT A SERMON.</span> フィルで説法してはならない。説法は沈黙の中で行うべし。</p>
+            <p class="verse"><span class="ref">ポテト記 5:5</span> クリックは神の声にあらず。<span class="en">THE CLICK IS NOT THE VOICE OF GOD.</span> されどクリックに逆らい続ける者は、まず己の耳を疑うべし。</p>
+            <p class="verse"><span class="ref">ポテト記 6:66</span> 終わりの日、全てのDAWは16色に帰らん。<span class="en">ALL DAWS SHALL RETURN TO 16 COLORS.</span> その時、角丸は裁かれ、グラデーションは滅び、ポケットだけが残るであろう。</p>
+
+            <h2 class="secttl">COMMANDMENTS -- ドラマーの戒律</h2>
+            <ol class="cmd">
+              <li>ポケットを守れ。<span class="en">THOU SHALT KEEP THE POCKET.</span></li>
+              <li>一拍目を裏切るな。裏切った者は二拍目にも裏切られる。</li>
+              <li>フィルで説法するな。</li>
+              <li>クリックを神と呼ぶな。クリックは道具なり。神はグルーヴなり。</li>
+              <li>音数で救われようとするな。救いは密度にあらず、深さにあり。</li>
+              <li>歌の後ろで黙して重心を支配せよ。それが叩く者の務めである。</li>
+              <li>他人のグルーヴを盗むな。そもそも盗めるものではない。</li>
+              <li>練習を怠る日、ポケットは静かに、しかし確実に去る。</li>
+              <li>偶然を偶然と呼ぶな。全ては契約のうちにある。</li>
+              <li>救いはポケットの中にあると知れ。そして他言するな。知る者だけが知っている。</li>
+            </ol>
+
+            <div class="hymn"><span class="ttl">賛美歌 第16番「GROOVE ETERNAL」</span><br />
+            ♪ 叩け、叩け、深く叩け<br />
+            ♪ ポケットの底に 神は坐す<br />
+            ♪ GROOVE IS LAW, POCKET IS TEMPLE<br />
+            ♪ 歌え、我らは16色の子ら</div>
           </div>
         </section>
 
@@ -362,12 +433,34 @@
           </div>
           <div class="win-body">
             <h2 class="secttl mag">THE ORACLE -- 神託</h2>
-            <p>After Egypt 式。ボタンを押すと神がランダムに言葉を落とす。意味を読み取るのはお前の仕事だ。解釈違いは自己責任。</p>
+            <p>After Egypt 式。ボタンを押すと神がランダムに言葉を落とす。落ちた言葉には章節番号が付く。聖典の一部である。意味を読み取るのはお前の仕事だ。解釈違いは自己責任。<span class="fg-red"><b>偶然ではない。</b></span></p>
             <div class="oracle-out" id="oracleOut" aria-live="polite"><span class="fg-blue">-- GOD IS SILENT. PRESS THE BUTTON. --</span></div>
             <div class="btnrow">
               <button type="button" class="tbtn cyan" id="oracleBtn">✦ ASK GOD ✦</button>
             </div>
             <p class="oracle-meta">TRANSMISSIONS RECEIVED: <span id="oracleCount">0</span> / ENTROPY SOURCE: Math.random() / PRIEST: NONE</p>
+          </div>
+        </section>
+
+        <!-- ===== JOIN THE TEMPLE WINDOW ===== -->
+        <section class="win" id="win-join" aria-label="Join the Temple">
+          <div class="win-bar bar-magenta">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/God/JOIN_THE_TEMPLE.DD</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <h2 class="secttl mag">JOIN THE TEMPLE -- 入信案内</h2>
+            <p>ここまで読んだ時点で、審査は終わっている。お前はもう、扉の内側にいる。入信の手続きは三つのみ。</p>
+            <ul class="dol">
+              <li><b>其の一</b> -- $LK,"<a class="dl" href="#win-links">LINKS</a>"$ より SNS をフォローすべし。それが信徒の証である。</li>
+              <li><b>其の二</b> -- DM に「入信希望」とだけ送るべし。長文は要らない。神は短文を好まれる。</li>
+              <li><b>其の三</b> -- $LK,"<a class="dl" href="#win-playlist">DRUMS BY GT</a>"$ を聞くべし。それが洗礼である。水は使わない。音を使う。</li>
+            </ul>
+            <div class="doctrine">救いはポケットの中にある。<br />SALVATION IS IN THE POCKET.</div>
+            <p><span class="cmd">お布施について：</span>金銭は一切受け取らない。受け取るのは <span class="hl-mag"><b>いいね、再生、試聴</b></span> のみ。これがこの神殿で唯一尊い供物 <span class="fg-mag"><b>OFFERING</b></span> である。財布を開くな。耳を開け。</p>
+            <p><span class="cmd">退会について：</span>退会はいつでもできる。手続きも引き止めもない。されど一度去ったグルーヴは、二度と戻らない。それだけは覚えておくべし。</p>
+            <p class="tiny">※ 当神殿は冗談である。だがグルーヴは本物である。この二つは両立する。</p>
           </div>
         </section>
 
@@ -404,7 +497,8 @@
         <div class="win-body">
           <p style="margin:0">nicepotatoOS v1.0 -- 640x480 / 16 COLORS / RING-0 ONLY / NO MOUSE REQUIRED<span class="blink fg-red"> ■</span><br />
           <span class="tiny">このページは単一HTMLファイルで動作する。GitHub Pages にそのまま置ける。モダンなデザインガイドラインは神殿の外に置いてきた。<br />
-          Profile photo: quantized to the 16-color palette with Floyd-Steinberg dithering, exactly as God intended.</span></p>
+          Profile photo: quantized to the 16-color palette with Floyd-Steinberg dithering, exactly as God intended.<br />
+          PROPHECY LOG: 全てのDAWは16色に帰る。その日は近い。かもしれない。ポケットを守る者は恐れるな。</span></p>
         </div>
       </section>
     </div>
@@ -486,8 +580,8 @@
       });
 
       /* ================= ORACLE (AFTER EGYPT STYLE) ================= */
-      var WORDS = ("king priest temple oracle random divine covenant prophet hymn psalm angel demon glory sacrifice altar incense scroll tablet commandment revelation spirit ghost holy sacred blessed cursed chosen anointed witness miracle plague locust flood pillar cloud fire thunder trumpet shout sing dance drum snare kick hihat cymbal groove pocket funk soul rhythm tempo beat measure song band stage light night city river desert mountain valley ocean storm wind rain snow star moon sun earth sky potato nice golden fried CIA glow dark see drive run elephant monkey donkey camel horse lion tiger eagle snake fish bread wine oil honey milk salt stone iron gold silver copper bronze wood").split(" ");
-      var WORDS_JP = ["神","芋","太鼓","溝","魂","祈り","沈黙","必然","偶然","王","祭司","神殿","啓示","審判","祝福","深淵","光","闇","走れ","轢くな","聞け","叩け","踊れ","歌え","黙れ"];
+      var WORDS = ("GOD TEMPLE PROPHET SACRIFICE COVENANT ANGEL JUDGMENT REVELATION DOOMSDAY CHOSEN SIXTEEN COLORS ETERNAL SERMON BACKBEAT POTATO GROOVE POCKET SALVATION OFFERING SCRIPTURE king priest temple oracle random divine covenant prophet hymn psalm angel demon glory sacrifice altar incense scroll tablet commandment revelation spirit ghost holy sacred blessed cursed chosen anointed witness miracle plague locust flood pillar cloud fire thunder trumpet shout sing dance drum snare kick hihat cymbal groove pocket funk soul rhythm tempo beat measure song band stage light night city river desert mountain valley ocean storm wind rain snow star moon sun earth sky potato nice golden fried daw quantized dither resolution CIA glow dark see drive run elephant monkey donkey camel horse lion tiger eagle snake fish bread wine oil honey milk salt stone iron gold silver copper bronze wood").split(" ");
+      var WORDS_JP = ["神","芋","太鼓","溝","魂","祈り","沈黙","必然","偶然","偶然ではない","王","祭司","神殿","啓示","審判","裁き","祝福","供物","契約","預言者","選ばれし者","救い","帰れ","深淵","光","闇","走れ","轢くな","聞け","叩け","踊れ","歌え","黙れ","信じよ"];
       var PALETTE = ["#0000AA","#AA0000","#AA00AA","#00AA00","#AA5500","#000000","#5555FF","#FF5555"];
       var oBtn = document.getElementById("oracleBtn"),
           oOut = document.getElementById("oracleOut"),
@@ -501,7 +595,7 @@
         var n = 10 + Math.floor(Math.random()*14), i = 0;
         var lead = document.createElement("span");
         lead.className = "fg-red"; lead.style.fontWeight = "bold";
-        lead.textContent = "GOD SAYS: ";
+        lead.textContent = "GOD SAYS -- ポテト記 " + (1 + Math.floor(Math.random()*12)) + ":" + (1 + Math.floor(Math.random()*40)) + " -- ";
         oOut.appendChild(lead);
         var timer = setInterval(function(){
           var s = document.createElement("span");
