@@ -172,7 +172,33 @@
         border:2px solid var(--black); background:var(--dkgray);
       }
       .proffig figcaption{ font-size:16px; line-height:1.25; margin-top:8px; max-width:196px; }
-      .proftext{ flex:1 1 220px; min-width:200px; }
+      .proftext{ margin-top:12px; }
+
+      /* ============ FIG.2 LOW-POLY DANCER STAGE ============ */
+      .polyfig{ margin:0; flex:1 1 190px; min-width:180px; }
+      .polystage{
+        border:3px solid var(--black);
+        box-shadow: inset 0 0 0 2px var(--ltgray), 6px 6px 0 var(--ltblue);
+        background:var(--white); line-height:0; overflow:hidden;
+      }
+      .polystage svg{ width:100%; height:auto; display:block; }
+      .polyfig figcaption{ font-size:16px; line-height:1.25; margin-top:8px; }
+      .lp-dancer{ animation:lp-bounce .72s steps(2,end) infinite; }
+      .lp-head{ transform-box:fill-box; transform-origin:50% 92%; animation:lp-head .72s steps(2,end) infinite; }
+      .lp-arm-l{ transform-box:fill-box; transform-origin:88% 6%; animation:lp-arm-l .36s steps(2,end) infinite alternate; }
+      .lp-arm-r{ transform-box:fill-box; transform-origin:12% 6%; animation:lp-arm-r .36s steps(2,end) infinite alternate; }
+      .lp-leg-l{ transform-box:fill-box; transform-origin:50% 0%; animation:lp-leg .36s steps(2,end) infinite alternate; }
+      .lp-leg-r{ transform-box:fill-box; transform-origin:50% 0%; animation:lp-leg .36s steps(2,end) infinite alternate-reverse; }
+      .lp-shadow{ transform-box:fill-box; transform-origin:50% 50%; animation:lp-shadow .36s steps(2,end) infinite alternate; }
+      @keyframes lp-bounce{ 0%{ transform:translate(0,0); } 25%{ transform:translate(-3px,-6px); } 50%{ transform:translate(0,0); } 75%{ transform:translate(3px,-6px); } 100%{ transform:translate(0,0); } }
+      @keyframes lp-head{ 0%{ transform:rotate(-4deg) translateY(0); } 50%{ transform:rotate(5deg) translateY(2px); } 100%{ transform:rotate(-4deg) translateY(0); } }
+      @keyframes lp-arm-l{ from{ transform:rotate(-20deg); } to{ transform:rotate(24deg); } }
+      @keyframes lp-arm-r{ from{ transform:rotate(20deg); } to{ transform:rotate(-24deg); } }
+      @keyframes lp-leg{ from{ transform:translateY(0); } to{ transform:translateY(-7px); } }
+      @keyframes lp-shadow{ from{ transform:scaleX(.84); opacity:.55; } to{ transform:scaleX(1); opacity:.9; } }
+      @media (prefers-reduced-motion: reduce){
+        .lp-dancer,.lp-head,.lp-arm-l,.lp-arm-r,.lp-leg-l,.lp-leg-r,.lp-shadow{ animation:none; }
+      }
       .profname{ font-size:34px; line-height:1; color:var(--blue); }
       table.spec{ border-collapse:collapse; width:100%; font-size:19px; }
       table.spec th, table.spec td{ border:2px solid var(--black); padding:3px 8px; text-align:left; vertical-align:top; }
@@ -667,11 +693,69 @@
                 </div>
                 <figcaption><span class="fg-red"><b>FIG.1</b></span> 写真。ロバート・ショウ。1977年、カバコフ少佐。彼はカメラを見ていない。汝を見ている。汝の魂は既に数えられ、測られ、記録された。返却はされない。THE EYES DO NOT BLINK. まばたきは記録にない。以上。</figcaption>
               </figure>
-              <div class="proftext">
-                <h2 class="profname">GEN TAGUCHI</h2>
-                <p><span class="hl-cyan"><b>DRUMMER</b></span> ポケット重視のグルーヴドラマー。速さより深さ。派手さより沈み込み。歌の後ろで黙る。黙って重心を支配する。それが叩き方だ。GOD SAYS: LESS.</p>
-                <p class="tiny">欄外 -- 写真は入口にすぎない。入口で人を決めるな。神は肖像を聞かない。聞くのは間だけだ。GOD DOES NOT LISTEN TO PORTRAITS.</p>
-              </div>
+              <figure class="polyfig">
+                <div class="polystage">
+                  <svg viewBox="0 0 220 262" role="img" aria-label="踊るローポリのロバート・ショウ、カバコフ少佐" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="0,224 220,224 220,262 0,262" fill="#AAAAAA"/>
+                    <polygon points="0,224 220,224 196,236 24,236" fill="#55FFFF"/>
+                    <g class="lp-dancer">
+                      <polygon class="lp-shadow" points="42,226 178,226 194,236 26,236" fill="#000000" opacity=".7"/>
+                      <g class="lp-leg-l">
+                        <polygon points="91,146 110,146 108,206 90,206" fill="#000000"/>
+                        <polygon points="99,146 110,146 108,206 100,206" fill="#555555"/>
+                        <polygon points="86,206 112,206 118,220 82,220" fill="#000000"/>
+                      </g>
+                      <g class="lp-leg-r">
+                        <polygon points="112,146 131,146 134,206 114,206" fill="#555555"/>
+                        <polygon points="112,146 121,146 122,206 114,206" fill="#000000"/>
+                        <polygon points="110,206 136,206 144,220 106,220" fill="#AA5500"/>
+                      </g>
+                      <polygon points="70,150 152,150 146,120 76,120" fill="#000000"/>
+                      <g class="lp-arm-l">
+                        <polygon points="79,82 60,90 64,140 84,134" fill="#000000"/>
+                        <polygon points="79,82 70,86 72,136 84,134" fill="#555555"/>
+                        <polygon points="60,138 80,132 78,148 62,150" fill="#FF5555"/>
+                      </g>
+                      <g class="lp-arm-r">
+                        <polygon points="143,82 162,90 158,140 138,134" fill="#555555"/>
+                        <polygon points="143,82 152,86 150,136 138,134" fill="#000000"/>
+                        <polygon points="142,132 162,138 160,150 144,148" fill="#FF5555"/>
+                      </g>
+                      <polygon points="76,76 146,76 152,150 70,150" fill="#000000"/>
+                      <polygon points="111,76 146,76 152,150 111,150" fill="#555555"/>
+                      <polygon points="99,78 123,78 111,120" fill="#FFFFFF"/>
+                      <polygon points="99,78 111,78 111,120" fill="#55FFFF"/>
+                      <polygon points="106,82 116,82 113,106 109,106" fill="#AA0000"/>
+                      <polygon points="76,76 99,78 88,104" fill="#555555"/>
+                      <polygon points="146,76 123,78 134,104" fill="#000000"/>
+                      <g class="lp-head">
+                        <polygon points="100,64 122,64 120,80 102,80" fill="#AA5500"/>
+                        <polygon points="84,16 138,16 134,50 120,68 98,68 86,48" fill="#FF5555"/>
+                        <polygon points="84,16 111,16 111,68 98,68 86,48" fill="#FF5555"/>
+                        <polygon points="111,16 138,16 134,50 120,68 111,68" fill="#AA5500"/>
+                        <polygon points="88,16 134,16 124,30 96,30" fill="#FFFF55"/>
+                        <polygon points="79,22 86,2 136,0 143,20 128,12 94,14 84,28" fill="#AA5500"/>
+                        <polygon points="86,2 136,0 143,20 122,8 96,10" fill="#000000"/>
+                        <polygon points="88,36 104,36 103,41 89,41" fill="#000000"/>
+                        <polygon points="118,36 134,36 133,41 119,41" fill="#000000"/>
+                        <polygon points="92,44 102,44 101,48 93,48" fill="#FFFFFF"/>
+                        <polygon points="120,44 130,44 129,48 121,48" fill="#FFFFFF"/>
+                        <polygon points="94,45 100,45 99,47 95,47" fill="#000000"/>
+                        <polygon points="122,45 128,45 127,47 123,47" fill="#000000"/>
+                        <polygon points="108,46 114,46 116,56 108,58" fill="#AA5500"/>
+                        <polygon points="96,62 126,62 122,66 100,66" fill="#000000"/>
+                        <polygon points="98,68 120,68 114,72 104,72" fill="#AA5500"/>
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><span class="fg-red"><b>FIG.2</b></span> 低ポリの少佐、踊る。スーツは黒く、顎は強く、拍は裏にある。彼は止まらない。止まることを記録されていない。THE POLYGONS DO NOT STOP. ポリゴンは止まらない。以上。</figcaption>
+              </figure>
+            </div>
+            <div class="proftext">
+              <h2 class="profname">GEN TAGUCHI</h2>
+              <p><span class="hl-cyan"><b>DRUMMER</b></span> ポケット重視のグルーヴドラマー。速さより深さ。派手さより沈み込み。歌の後ろで黙る。黙って重心を支配する。それが叩き方だ。GOD SAYS: LESS.</p>
+              <p class="tiny">欄外 -- 写真は入口にすぎない。入口で人を決めるな。神は肖像を聞かない。聞くのは間だけだ。GOD DOES NOT LISTEN TO PORTRAITS.</p>
             </div>
             <table class="spec">
               <tr><th>GENRES</th><td>Groove / R&amp;B / Soul / Funk / J-Pop</td></tr>
