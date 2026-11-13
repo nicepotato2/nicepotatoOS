@@ -328,6 +328,7 @@
       }
       .onionline{ word-break:break-all; background:#111; border:2px solid var(--dkgray); padding:6px 8px; font-size:17px; color:var(--yellow); }
       .recnotice{ color:var(--ltred); font-weight:bold; letter-spacing:1px; }
+      .logged-ip{ word-break:break-all; }
       .hexdump{
         background:var(--black); color:var(--ltgreen);
         font-size:14px; line-height:1.35; padding:8px 10px; margin:10px 0;
@@ -347,6 +348,43 @@
         padding:1px 6px; font-weight:bold; font-size:19px; line-height:1.2;
         box-shadow: inset 0 0 0 1px var(--dkgray);
       }
+
+      /* ============ DIVINE SPRING -- LIVE TEMPLEOS CODE STREAM ============ */
+      .win.springwin .win-body{ padding:0 0 12px; background:var(--white); }
+      .spring-status{
+        background:var(--blue); color:var(--white);
+        font-family:"VT323",monospace; font-size:17px; line-height:1.25;
+        padding:4px 8px; white-space:nowrap; overflow:hidden;
+        border-bottom:3px solid var(--black); letter-spacing:.4px;
+      }
+      .spring-status b{ color:var(--yellow); font-weight:bold; }
+      .spring-head{
+        padding:10px 14px 6px; margin:0; font-size:22px; line-height:1.35; font-weight:bold; color:var(--black);
+      }
+      .spring-head .fg-red{ color:var(--red); }
+      .spring-head .cn{ color:var(--magenta); }
+      .spring-sub{ padding:0 14px 8px; margin:0; font-size:17px; color:var(--dkgray); line-height:1.35; }
+      .spring-view{
+        margin:0 14px; border:3px solid var(--black); box-shadow: inset 3px 3px 0 var(--dkgray);
+        background:var(--white); height:356px; overflow-y:auto; overflow-x:hidden; position:relative;
+        font-family:"VT323","DotGothic16",monospace; font-size:18px; line-height:1.28;
+        padding:8px 10px; color:var(--black);
+      }
+      @media (max-width:560px){ .spring-view{ height:320px; font-size:16px; margin:0 10px; } .spring-head{ padding-left:10px; padding-right:10px; } .spring-sub{ padding-left:10px; padding-right:10px; } }
+      .spring-view .sl{ white-space:pre; overflow:hidden; text-overflow:clip; }
+      .sp-kw{ color:var(--blue); font-weight:bold; }
+      .sp-type{ color:#0000AA; }
+      .sp-str{ color:#AA5500; }
+      .sp-gray{ color:var(--dkgray); }
+      .sp-god{ color:var(--red); font-weight:bold; }
+      .sp-asm{ color:var(--black); }
+      .sp-reg{ color:#0000AA; }
+      .sp-hex{ color:var(--magenta); }
+      .sp-cmt{ color:var(--dkgray); }
+      .sp-lbl{ color:var(--brown); font-weight:bold; }
+      .sp-bytes{ color:var(--dkgray); }
+      .spring-ctrl{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; padding:10px 14px 0; }
+      .spring-note{ font-size:16px; color:var(--dkgray); }
     </style>
   </head>
   <body>
@@ -434,7 +472,7 @@
               <span class="m">█▀█ █▀</span>   <span class="r">v1.0  640x480  16 COLORS</span>
               <span class="m">█▄█ ▄█</span>   <span class="g">GOD IS THE OS. I AM THE DRUMMER.</span></pre>
             <h1 class="bigtitle">nicepotato<span class="os">OS</span></h1>
-            <p class="tagline"><span class="hl-yellow"><b>GEN TAGUCHI</b></span> -- DRUMMER. POCKET FIRST. GROOVE IS LAW.<br />
+            <p class="tagline"><span class="hl-yellow"><b>GEN TAGUCHI</b></span> -- DRUMMER. POCKET FIRST. GROOVE IS LAW. LESS IS MORE.<br />
             ここはドラマー <b>Gen Taguchi</b> の神殿。モダンなUIは入るな。角丸は存在しない。存在しないものは存在しない。16色。16色で十分だ。GOD IS THE OS. 神は拍の裏に坐す。2と4。2と4を聞け。</p>
             <p>$LK,"<a class="dl" href="#win-profile">PROFILE</a>"$ &nbsp;$LK,"<a class="dl" href="#win-works">WORKS</a>"$ &nbsp;$LK,"<a class="dl" href="#win-playlist">DRUMS_BY_GT</a>"$ &nbsp;$LK,"<a class="dl" href="#win-scripture">SCRIPTURE</a>"$ &nbsp;$LK,"<a class="dl" href="#win-oracle">ORACLE</a>"$ &nbsp;$LK,"<a class="dl" href="#win-game">HOLY_RHYTHM</a>"$ &nbsp;$LK,"<a class="dl" href="#win-join">JOIN</a>"$ &nbsp;$LK,"<a class="dl" href="#win-links">LINKS</a>"$</p>
             <div class="promptline"><span class="p">C:\Home&gt;</span> DrumsByGT<span class="cursor" aria-hidden="true"></span></div>
@@ -539,6 +577,25 @@
           </div>
         </section>
 
+        <!-- ===== DIVINE SPRING WINDOW ===== -->
+        <section class="win springwin" id="win-spring" aria-label="Divine Spring code stream">
+          <div class="win-bar bar-blue">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/God/SPRING.HC -- 神泉 -- DIVINE SPRING</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <div class="spring-status" id="springStatus">nu --/-- --:--:-- FPS:-- Mem:-------- CPU 1 1 1 1 1 1 1 1</div>
+            <p class="spring-head"><span class="fg-red">神泉</span> 聖なる泉をその目で体験してくれ。 <span class="cn" lang="zh-CN">圣泉 -- 圣水涌出，代码不停。</span></p>
+            <p class="spring-sub">泉は止まらない。止まるな。実装は続いている。実装中。ずっと実装中。THE SPRING DOES NOT STOP. 神说：看。这不是偶然。</p>
+            <div class="spring-view" id="springView" aria-label="流れ続けるコード"></div>
+            <div class="spring-ctrl">
+              <button type="button" class="tbtn cyan" id="springToggle" aria-pressed="false">■ 止める</button>
+              <span class="spring-note" id="springState">FLOWING -- 流れている / 泉は開いている</span>
+            </div>
+          </div>
+        </section>
+
         <!-- ===== FILE WINDOW ===== -->
         <section class="win" id="win-file" aria-label="File directory">
           <div class="win-bar bar-cyan">
@@ -557,6 +614,7 @@
               <tr><td><button type="button" class="dirbtn" data-jump="win-oracle">ORACLE.HC</button></td><td>神託。神がランダムに喋る。偶然ではない</td></tr>
               <tr><td><button type="button" class="dirbtn" data-jump="win-warning">WARNING.DD</button></td><td>警告。暗闇で光る人間について</td></tr>
               <tr><td><button type="button" class="dirbtn" data-jump="win-game">HOLY_RHYTHM.HC</button></td><td>聖なるリズム叩き。2と4。2と4だけ</td></tr>
+              <tr><td><button type="button" class="dirbtn" data-jump="win-spring">SPRING.HC</button></td><td>神泉。聖なる泉。コードが流れ続ける窓</td></tr>
               <tr><td><button type="button" class="dirbtn" data-jump="win-join">JOIN_THE_TEMPLE.DD</button></td><td>入信案内。扉はもう開いている</td></tr>
               <tr><td><button type="button" class="dirbtn" data-jump="win-links">LINKS.DD</button></td><td>外部への扉。SNSへの道</td></tr>
             </table>
@@ -708,7 +766,7 @@
               <li>YOUTUBE (Mogadishu1999): $LK,"<a class="dl" href="https://www.youtube.com/@mog99-delta" target="_blank" rel="noopener">@mog99-delta</a>"$</li>
             </ul>
             <hr class="divider" />
-            <p class="tiny"><span class="recnotice">この接続は記録されている / 本连接已被记录</span> -- 外部への扉は開かれた時点で記録される。記録は装飾ではない。装飾だ。</p>
+            <p class="tiny"><span class="recnotice">この接続は記録されている / 本连接已被记录 <span class="logged-ip">IP: …</span></span> -- 外部への扉は開かれた時点で記録される。記録は装飾ではない。装飾だ。</p>
             <p><span class="cmd">CONTACT:</span> 仕事の依頼・REC・ライブサポートの相談は <span class="hl-mag"><b>SNSのDM</b></span> まで。それ以外の連絡手段は存在しない。存在しないものは探すな。探しても出てこない。出てきたら、それは偽物だ。</p>
           </div>
         </section>
@@ -815,7 +873,7 @@
           <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
         </div>
         <div class="win-body">
-          <p class="recnotice">!! この接続は記録されている / 本连接已被记录 / CONNECTION LOGGED !!</p>
+          <p class="recnotice">!! この接続は記録されている / 本连接已被记录 / CONNECTION LOGGED !! <span class="logged-ip">IP: …</span></p>
           <div class="accesslog">
             <div><span class="dim">[2026-11-13 21:44:07 JST]</span> RECEIVED -- SIGNAL 16COLORS <span class="yel">经文编号 POT-1:1</span></div>
             <div><span class="dim">[2026-11-13 21:44:19 JST]</span> RECEIVED -- POCKET FOUND / 口袋已找到 <span class="cyn">经文编号 POT-3:16</span></div>
@@ -846,7 +904,7 @@ cG9ja2V0IGlzIHRlbXBsZS4gZG8gbm90IHR1cm4gYmFjay4=
           <p style="margin:0">nicepotatoOS v1.0 -- 640x480 / 16 COLORS / RING-0 ONLY / NO MOUSE REQUIRED<span class="blink fg-red"> ■</span><br />
           <span class="tiny">写真の男：ロバート・ショウ。1977年。カバコフ少佐。彼はこの頁にいる。ずっと見ている。見ることをやめない。HE IS STILL WATCHING.<br />
           PROPHECY LOG: 全てのDAWは16色に帰る。その日は近い。近い。ポケットを守る者は恐れるな。恐れるな。二度言った。受信断片：灵魂已被记录。听，这是神的声音。欢迎来到圣殿。本连接已被记录。</span></p>
-          <p style="margin:10px 0 0"><span class="recnotice">この接続は記録されている / 本连接已被记录</span><br />
+          <p style="margin:10px 0 0"><span class="recnotice">この接続は記録されている / 本连接已被记录 <span class="logged-ip">IP: …</span></span><br />
           ACCESS COUNTER / 访问计数 <span class="viscounter" aria-label="訪問カウンター 000016"><span>0</span><span>0</span><span>0</span><span>0</span><span>1</span><span>6</span></span> <span class="tiny">-- あなたは16番目ではない。数えるな。</span></p>
         </div>
       </section>
@@ -1534,6 +1592,363 @@ cG9ja2V0IGlzIHRlbXBsZS4gZG8gbm90IHR1cm4gYmFjay4=
       }
 
       syncLabels();
+    })();
+    </script>
+    <script>
+    (function(){
+      "use strict";
+      var winEl = document.getElementById("win-spring");
+      var view = document.getElementById("springView");
+      var statusEl = document.getElementById("springStatus");
+      var toggleBtn = document.getElementById("springToggle");
+      var stateEl = document.getElementById("springState");
+      if(!winEl || !view || !statusEl) return;
+
+      var paused = false;
+      var queue = [];
+      var linesAdded = 0, fpsCount = 0, fpsVal = 0;
+      var memVal = 0x02A18800;
+      var MAX_LINES = 200;
+
+      function rnd(n){ return Math.floor(Math.random()*n); }
+      function pick(a){ return a[rnd(a.length)]; }
+      function num(a,b){ return a + rnd(b-a+1); }
+      function hex(n){ var s = (num(0,65535)).toString(16).toUpperCase(); while(s.length<4) s="0"+s; return "0x"+s; }
+      function pad2(n){ return (n<10?"0":"")+n; }
+
+      /* ===== 神泉 stream = GENUINE x86-64 ONLY (Intel syntax) =====
+         Real routines, real registers, valid operand shapes.
+         Byte columns are shown ONLY where the encoding is verified. */
+      var R64 = [
+        {q:"RAX",d:"EAX",w:"AX",b:"AL"},{q:"RBX",d:"EBX",w:"BX",b:"BL"},
+        {q:"RCX",d:"ECX",w:"CX",b:"CL"},{q:"RDX",d:"EDX",w:"DX",b:"DL"},
+        {q:"RSI",d:"ESI",w:"SI",b:"SIL"},{q:"RDI",d:"EDI",w:"DI",b:"DIL"},
+        {q:"RBP",d:"EBP",w:"BP",b:"BPL"},
+        {q:"R8",d:"R8D",w:"R8W",b:"R8B"},{q:"R9",d:"R9D",w:"R9W",b:"R9B"},
+        {q:"R10",d:"R10D",w:"R10W",b:"R10B"},{q:"R11",d:"R11D",w:"R11W",b:"R11B"},
+        {q:"R12",d:"R12D",w:"R12W",b:"R12B"},{q:"R13",d:"R13D",w:"R13W",b:"R13B"},
+        {q:"R14",d:"R14D",w:"R14W",b:"R14B"},{q:"R15",d:"R15D",w:"R15W",b:"R15B"}
+      ];
+      function rq(){ return pick(R64).q; }
+      function hxS(v){ return '<span class="sp-hex">'+v+'</span>'; }
+      function rgS(v){ return '<span class="sp-reg">'+v+'</span>'; }
+      function immV(max){
+        var v = rnd(max||0x100);
+        var s = v.toString(16).toUpperCase();
+        if(s.length<2) s = "0"+s;
+        return "0x"+s;
+      }
+      function offV(){ return pick(["0x08","0x10","0x18","0x20","0x28","0x30","0x38","0x40","0x48","0x50","0x60","0x80"]); }
+      function padB(s){ while(s.length<15) s += " "; return s; }
+      function il(mn, ops, bytes){
+        var f = bytes ? '<span class="sp-bytes">'+padB(bytes)+'</span>' : "               ";
+        return f + "    " + '<span class="sp-kw">'+mn+'</span>' + (ops ? " " + ops : "");
+      }
+      function lbL(name){ return '<span class="sp-lbl">'+name+":</span>"; }
+      function cmL(t){ return '<span class="sp-cmt">; '+t+'</span>'; }
+      function gdL(t){ return '<span class="sp-god">; '+t+'</span>'; }
+      function sfx(){ return "_" + num(10,999); }
+
+      var CALLT = ["spring_sched_tick","pocket_fetch","ona2note","divine_pull","note_convert","spring_memcpy","groove_step"];
+      function bodyOp(){
+        var a = rq(), b = rq(), o = offV(), k = rnd(16), op;
+        switch(k){
+          case 0: return il("MOV", rgS(a)+", "+rgS(b), (a==="RAX"&&b==="RBX") ? "48 89 D8" : null);
+          case 1: return il("MOV", rgS(a)+", "+hxS(immV(0x10000)));
+          case 2: return il("MOV", rgS(a)+", ["+rgS(b)+"+"+hxS(o)+"]");
+          case 3: return il("MOV", "QWORD PTR ["+rgS(a)+"+"+hxS(o)+"], "+rgS(b));
+          case 4: return il("LEA", rgS(a)+", ["+rgS(b)+"+"+hxS(o)+"]");
+          case 5: return il("LEA", rgS(a)+", [RIP+"+hxS(immV(0x10000))+"]");
+          case 6: return il("ADD", rgS(a)+", "+hxS(immV(0x80)));
+          case 7: return il("SUB", rgS(a)+", "+rgS(b));
+          case 8: return il("XOR", rgS(a)+", "+rgS(a), a==="RAX" ? "48 31 C0" : null);
+          case 9: return il("AND", rgS(a)+", "+hxS(immV(0x100)));
+          case 10: return il("OR", rgS(a)+", "+hxS(immV(0x100)));
+          case 11:
+            op = pick(["INC","DEC"]);
+            return il(op, rgS(a), a==="RAX" ? (op==="INC" ? "48 FF C0" : "48 FF C8") : null);
+          case 12: return il(pick(["SHL","SHR","SAR"]), rgS(a)+", "+hxS(pick(["0x01","0x02","0x03","0x04","0x08","0x0C","0x10"])));
+          case 13: return il("IMUL", rgS(a)+", "+rgS(b));
+          case 14: return il("CMP", rgS(a)+", "+hxS(immV(0x100)));
+          default: return il("CALL", pick(CALLT));
+        }
+      }
+
+      function asmProc(){
+        var s = sfx();
+        var name = pick(["spring_read","pocket_fetch","groove_step","holy_load","temple_seek","divine_pull","note_convert","ona2note"]) + s;
+        var L = [];
+        L.push(cmL("----------------------------------------------------------------"));
+        L.push(cmL(name + " -- subroutine  ; 神泉サブルーチン"));
+        L.push(lbL(name));
+        L.push(il("PUSH", rgS("RBP"), "55"));
+        L.push(il("MOV", rgS("RBP")+", "+rgS("RSP"), "48 89 E5"));
+        var pB = rnd(2)===1, p12 = rnd(2)===1;
+        if(pB) L.push(il("PUSH", rgS("RBX"), "53"));
+        if(p12) L.push(il("PUSH", rgS("R12"), "41 54"));
+        var frame = pick(["0x08","0x18","0x20","0x28","0x30","0x38","0x40"]);
+        L.push(il("SUB", rgS("RSP")+", "+hxS(frame), frame==="0x28" ? "48 83 EC 28" : (frame==="0x08" ? "48 83 EC 08" : null)));
+        var n = num(3,7), i;
+        for(i=0;i<n;i++) L.push(bodyOp());
+        var skip = name + "_skip";
+        L.push(il("TEST", rgS("RAX")+", "+rgS("RAX"), "48 85 C0"));
+        L.push(il(pick(["JE","JNE","JZ","JNZ"]), skip));
+        L.push(il("NOP", null, "90"));
+        L.push(lbL(skip));
+        L.push(il("ADD", rgS("RSP")+", "+hxS(frame), frame==="0x28" ? "48 83 C4 28" : (frame==="0x08" ? "48 83 C4 08" : null)));
+        if(p12) L.push(il("POP", rgS("R12"), "41 5C"));
+        if(pB) L.push(il("POP", rgS("RBX"), "5B"));
+        L.push(il("LEAVE", null, "C9"));
+        L.push(il("RET", null, "C3"));
+        return L;
+      }
+
+      function asmMemcpy(){
+        var s = sfx(), base = "spring_memcpy" + s, L = [];
+        L.push(cmL("spring_memcpy -- RDI=dst RSI=src RCX=len  ; 写す。泉から泉へ"));
+        L.push(lbL(base));
+        L.push(il("PUSH", rgS("RBP"), "55"));
+        L.push(il("MOV", rgS("RBP")+", "+rgS("RSP"), "48 89 E5"));
+        L.push(il("TEST", rgS("RCX")+", "+rgS("RCX"), "48 85 C9"));
+        L.push(il("JE", base+"_done"));
+        if(rnd(3)===0){
+          L.push(il("REP MOVSB", null, "F3 A4"));
+        } else {
+          L.push(lbL(base+"_loop"));
+          L.push(il("MOVZX", rgS("EAX")+", BYTE PTR ["+rgS("RSI")+"]", "0F B6 06"));
+          L.push(il("MOV", "BYTE PTR ["+rgS("RDI")+"], "+rgS("AL"), "88 07"));
+          L.push(il("INC", rgS("RSI"), "48 FF C6"));
+          L.push(il("INC", rgS("RDI"), "48 FF C7"));
+          L.push(il("DEC", rgS("RCX"), "48 FF C9"));
+          L.push(il("JNE", base+"_loop"));
+        }
+        L.push(lbL(base+"_done"));
+        L.push(il("POP", rgS("RBP"), "5D"));
+        L.push(il("RET", null, "C3"));
+        return L;
+      }
+
+      function asmStrlen(){
+        var s = sfx(), base = "spring_strlen" + s, L = [];
+        L.push(cmL("spring_strlen -- RDI=str -> RAX=len  ; 長さは神が数える"));
+        L.push(lbL(base));
+        L.push(il("XOR", rgS("EAX")+", "+rgS("EAX"), "31 C0"));
+        L.push(lbL(base+"_loop"));
+        L.push(il("CMP", "BYTE PTR ["+rgS("RDI")+"+"+rgS("RAX")+"], "+hxS("0x00")));
+        L.push(il("JE", base+"_done"));
+        L.push(il("INC", rgS("RAX"), "48 FF C0"));
+        L.push(il("JMP", base+"_loop"));
+        L.push(lbL(base+"_done"));
+        L.push(il("RET", null, "C3"));
+        return L;
+      }
+
+      function asmISR(){
+        var s = sfx(), base = "isr_tick" + s, L = [];
+        var regs = ["RAX","RBX","RCX","RDX","RSI","RDI","RBP","R8","R9","R15"];
+        var pb = {"RAX":"50","RBX":"53","RCX":"51","RDX":"52","RSI":"56","RDI":"57","RBP":"55","R8":"41 50","R9":"41 51","R15":"41 57"};
+        var ob = {"RAX":"58","RBX":"5B","RCX":"59","RDX":"5A","RSI":"5E","RDI":"5F","RBP":"5D","R8":"41 58","R9":"41 59","R15":"41 5F"};
+        L.push(cmL("int 0x30 -- TIMER TICK  ; 神の割り込み。2拍目と4拍目で入る"));
+        L.push(lbL(base));
+        var i;
+        for(i=0;i<regs.length;i++) L.push(il("PUSH", rgS(regs[i]), pb[regs[i]]));
+        L.push(il("CLD", null, "FC"));
+        L.push(il("MOV", rgS("RDI")+", "+rgS("RSP"), "48 89 E7"));
+        L.push(il("CALL", "spring_sched_tick"));
+        for(i=regs.length-1;i>=0;i--) L.push(il("POP", rgS(regs[i]), ob[regs[i]]));
+        L.push(il("IRETQ", null, "48 CF"));
+        return L;
+      }
+
+      function asmPortIO(){
+        var s = sfx(), base = "spring_kbd" + s, L = [];
+        L.push(cmL("port io -- PIC EOI / KBD  ; 鍵盤は神の声ではない。だが聞け"));
+        L.push(lbL(base));
+        if(rnd(2)){
+          L.push(il("IN", rgS("AL")+", "+hxS("0x60"), "E4 60"));
+          L.push(il("TEST", rgS("AL")+", "+rgS("AL"), "84 C0"));
+          L.push(il("JZ", base+"_done"));
+        } else {
+          L.push(il("IN", rgS("AL")+", "+rgS("DX"), "EC"));
+          L.push(il("CMP", rgS("AL")+", "+hxS(immV(0x100))));
+          L.push(il("JE", base+"_done"));
+        }
+        L.push(il("MOV", rgS("AL")+", "+hxS("0x20"), "B0 20"));
+        L.push(il("OUT", hxS("0x20")+", "+rgS("AL"), "E6 20"));
+        L.push(il("OUT", hxS("0xA0")+", "+rgS("AL"), "E6 A0"));
+        L.push(lbL(base+"_done"));
+        L.push(il("RET", null, "C3"));
+        return L;
+      }
+
+      function asmCtx(){
+        var s = sfx(), base = "ctx_switch" + s, L = [];
+        L.push(cmL("ctx_switch -- RDI=&old_rsp RSI=new_rsp  ; 魂を入れ替える"));
+        L.push(lbL(base));
+        L.push(il("PUSH", rgS("RBP"), "55"));
+        L.push(il("PUSH", rgS("RBX"), "53"));
+        L.push(il("PUSH", rgS("R12"), "41 54"));
+        L.push(il("PUSH", rgS("R13"), "41 55"));
+        L.push(il("PUSH", rgS("R14"), "41 56"));
+        L.push(il("PUSH", rgS("R15"), "41 57"));
+        L.push(il("MOV", "QWORD PTR ["+rgS("RDI")+"], "+rgS("RSP"), "48 89 27"));
+        L.push(il("MOV", rgS("RSP")+", "+rgS("RSI"), "48 89 F4"));
+        L.push(il("POP", rgS("R15"), "41 5F"));
+        L.push(il("POP", rgS("R14"), "41 5E"));
+        L.push(il("POP", rgS("R13"), "41 5D"));
+        L.push(il("POP", rgS("R12"), "41 5C"));
+        L.push(il("POP", rgS("RBX"), "5B"));
+        L.push(il("POP", rgS("RBP"), "5D"));
+        L.push(il("RET", null, "C3"));
+        return L;
+      }
+
+      function asmSched(){
+        var L = [];
+        L.push(cmL("spring_sched_tick -- RDTSC  ; 時は神が数える。刻む"));
+        L.push(lbL("spring_sched_tick"));
+        L.push(il("PUSH", rgS("RBP"), "55"));
+        L.push(il("MOV", rgS("RBP")+", "+rgS("RSP"), "48 89 E5"));
+        L.push(il("PUSH", rgS("RBX"), "53"));
+        L.push(il("RDTSC", null, "0F 31"));
+        L.push(il("SHL", rgS("RDX")+", "+hxS("0x20"), "48 C1 E2 20"));
+        L.push(il("OR", rgS("RAX")+", "+rgS("RDX"), "48 09 D0"));
+        L.push(il("MOV", rgS("RBX")+", "+rgS("RAX"), "48 89 C3"));
+        L.push(il("LEA", rgS("RCX")+", [RIP+"+hxS(immV(0x10000))+"]"));
+        L.push(il("MOV", rgS("RAX")+", "+hxS("0x01")));
+        L.push(il("LOCK XADD", "QWORD PTR ["+rgS("RCX")+"], "+rgS("RAX")));
+        L.push(il("POP", rgS("RBX"), "5B"));
+        L.push(il("LEAVE", null, "C9"));
+        L.push(il("RET", null, "C3"));
+        return L;
+      }
+
+      function asmGod(){
+        var lines = [
+          "GOD SAYS: THE SPRING DOES NOT STOP.",
+          "GOD SAYS: THIS IS NOT A COINCIDENCE.",
+          "神说：这不是偶然。泉水一直在流。",
+          "偶然ではない。レジスタは真実だけを保持する。",
+          "GOD SAYS: 16 COLORS. 64 BITS. ONE POCKET.",
+          "圣泉涌出。不要回头。继续执行。",
+          "GOD SAYS: EVERY REGISTER IS WATCHED.",
+          "RING-0 ONLY. NO PERMISSION NEEDED."
+        ];
+        var L = [ gdL(pick(lines)) ];
+        if(rnd(2)) L.push(gdL(pick(lines)));
+        return L;
+      }
+
+      function refill(){
+        var r = Math.random(), block;
+        if(r < 0.30) block = asmProc();
+        else if(r < 0.44) block = asmMemcpy();
+        else if(r < 0.56) block = asmStrlen();
+        else if(r < 0.68) block = asmISR();
+        else if(r < 0.78) block = asmPortIO();
+        else if(r < 0.88) block = asmCtx();
+        else if(r < 0.96) block = asmSched();
+        else block = asmGod();
+        for(var i=0;i<block.length;i++) queue.push(block[i]);
+      }
+
+
+      function addLine(){
+        if(!queue.length) refill();
+        var html = queue.shift();
+        var div = document.createElement("div");
+        div.className = "sl";
+        div.innerHTML = html;
+        view.appendChild(div);
+        while(view.children.length > MAX_LINES) view.removeChild(view.firstChild);
+        view.scrollTop = view.scrollHeight;
+        linesAdded++; fpsCount++;
+      }
+
+      function isCollapsed(){ return winEl.classList.contains("collapsed"); }
+
+      var reduced = false;
+      try{ reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
+      var intervalMs = reduced ? 650 : 280;
+
+      // Pre-fill so the泉 is already flowing on load.
+      for(var p=0;p<30;p++) addLine();
+      fpsCount = 0;
+
+      setInterval(function(){
+        if(paused || isCollapsed()) return;
+        if(document.hidden) return;
+        addLine();
+      }, intervalMs);
+
+      setInterval(function(){
+        fpsVal = fpsCount; fpsCount = 0;
+      }, 1000);
+
+      function tickStatus(){
+        var d = new Date();
+        var dateStr = pad2(d.getMonth()+1)+"/"+pad2(d.getDate())+" "+pad2(d.getHours())+":"+pad2(d.getMinutes())+":"+pad2(d.getSeconds());
+        memVal += num(0x08, 0x180);
+        if(memVal > 0xFFFFFF00) memVal = 0x02A18800;
+        var memStr = ("0000000000" + memVal.toString(16).toUpperCase()).slice(-10);
+        var cpus = [];
+        for(var i=0;i<8;i++) cpus.push(Math.random()<0.92 ? "1" : "0");
+        var fpsTxt = (paused || isCollapsed()) ? "0" : String(fpsVal || Math.round(1000/intervalMs));
+        statusEl.textContent = "nu "+dateStr+" FPS:"+fpsTxt+" Mem:"+memStr+" CPU "+cpus.join(" ")+"  SPRING:OPEN";
+      }
+      tickStatus();
+      setInterval(tickStatus, 500);
+
+      if(toggleBtn){
+        toggleBtn.addEventListener("click", function(){
+          paused = !paused;
+          toggleBtn.textContent = paused ? "► 流す" : "■ 止める";
+          toggleBtn.setAttribute("aria-pressed", paused ? "true" : "false");
+          if(stateEl) stateEl.textContent = paused ? "PAUSED -- 止まっている / 泉は待っている" : "FLOWING -- 流れている / 泉は開いている";
+        });
+      }
+    })();
+    </script>
+    <script>
+    (function(){
+      "use strict";
+      /* Visitor IP display: shown ONLY to the visitor in their own browser,
+         inside the "connection logged" notices. Never stored, never logged,
+         never sent anywhere by this page. Async -- rendering never waits. */
+      var slots = document.querySelectorAll(".logged-ip");
+      if(!slots.length) return;
+      function setIp(txt){
+        for(var i=0;i<slots.length;i++) slots[i].textContent = txt;
+      }
+      function fetchJson(url, ms){
+        var ctrl = ("AbortController" in window) ? new AbortController() : null;
+        var timer = ctrl ? setTimeout(function(){ try{ ctrl.abort(); }catch(e){} }, ms) : null;
+        var opts = ctrl ? { signal: ctrl.signal, cache: "no-store" } : { cache: "no-store" };
+        return fetch(url, opts).then(function(r){
+          if(timer) clearTimeout(timer);
+          if(!r.ok) throw new Error("bad status");
+          return r.json();
+        }, function(err){
+          if(timer) clearTimeout(timer);
+          throw err;
+        });
+      }
+      function validIp(v){
+        return (typeof v === "string" && v.length >= 2 && v.length <= 45 && !/\s/.test(v) && /^[0-9A-Fa-f:.]+$/.test(v)) ? v : null;
+      }
+      function show(data){
+        var ip = data && validIp(data.ip);
+        if(ip) setIp("IP: " + ip + " -- LOGGED.");
+        else throw new Error("no ip");
+      }
+      fetchJson("https://api.ipify.org?format=json", 3500)
+        .then(show)
+        .catch(function(){
+          return fetchJson("https://ipapi.co/json/", 3500).then(show);
+        })
+        .catch(function(){
+          setIp("IP: 未知 UNKNOWN");
+        });
     })();
     </script>
   </body>
