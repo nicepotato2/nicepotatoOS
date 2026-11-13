@@ -192,6 +192,7 @@
       .tbtn:disabled{ opacity:.45; cursor:wait; transform:none; }
       .tbtn.green{ background:var(--ltgreen); } .tbtn.cyan{ background:var(--ltcyan); }
       .tbtn.mag{ background:var(--ltmagenta); } .tbtn.yellow{ background:var(--yellow); }
+      .tbtn.red{ background:var(--ltred); }
       .btnrow{ display:flex; flex-wrap:wrap; gap:12px; margin:10px 0 4px; }
 
       /* ============ ORACLE ============ */
@@ -245,6 +246,75 @@
         background:var(--yellow); border:3px solid var(--black);
         padding:8px 10px; font-size:22px; font-weight:bold; margin:10px 0;
       }
+
+      /* ============ MENU DROPDOWNS (REAL. THEY WORK.) ============ */
+      .menu{ position:relative; display:inline-flex; }
+      .menubar button.mi{
+        background:transparent; border:none; box-shadow:none; color:var(--black);
+      }
+      .menubar button.mi.open{ background:var(--blue); color:var(--white); }
+      .dropdown{
+        position:absolute; top:calc(100% + 3px); left:0; z-index:1000;
+        min-width:260px; max-width:calc(100vw - 16px);
+        max-height:72vh; overflow-y:auto;
+        background:var(--ltgray);
+        border:3px solid var(--black);
+        box-shadow: inset 2px 2px 0 var(--white), 6px 6px 0 rgba(0,0,0,.45);
+        padding:4px;
+      }
+      .dropdown[hidden]{ display:none; }
+      .menu.r .dropdown{ left:auto; right:0; }
+      .menubar .di{
+        display:flex; width:100%; align-items:center; gap:6px;
+        font:inherit; font-size:19px; text-align:left;
+        background:transparent; color:var(--black);
+        border:none; box-shadow:none;
+        padding:7px 10px; min-height:36px; cursor:pointer;
+      }
+      .menubar .di:hover{ background:var(--blue); color:var(--white); }
+      .dsep{ border-top:2px solid var(--dkgray); box-shadow:0 1px 0 var(--white); margin:4px 2px; }
+
+      /* ============ DIRECTORY LISTING (FILE.DD) ============ */
+      table.dir{ border-collapse:collapse; width:100%; font-size:19px; }
+      table.dir td{ border-bottom:2px dotted var(--ltgray); padding:5px 6px; vertical-align:top; }
+      table.dir tr:last-child td{ border-bottom:none; }
+      .dirbtn{
+        font:inherit; font-size:19px; font-weight:bold; color:var(--magenta);
+        background:none; border:none; padding:0; cursor:pointer;
+        text-decoration:underline; text-underline-offset:2px; white-space:nowrap;
+      }
+      .dirbtn:hover{ background:var(--magenta); color:var(--white); }
+
+      /* ============ WINDOW MANAGER ROWS (WINDOW.DD) ============ */
+      .wrow{
+        display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px;
+        padding:6px 0; border-bottom:2px dotted var(--ltgray);
+      }
+      .wrow:last-child{ border-bottom:none; }
+      .wrow .wname{ flex:1 1 170px; font-weight:bold; min-width:0; overflow-wrap:anywhere; }
+      .wrow .wstate{ color:var(--blue); font-weight:bold; }
+      .sbtn{
+        font-family:inherit; font-size:17px; font-weight:bold;
+        background:var(--ltgray); color:var(--black);
+        border:2px solid var(--black);
+        box-shadow: inset -2px -2px 0 var(--dkgray), inset 2px 2px 0 var(--white);
+        padding:2px 12px; min-height:34px; cursor:pointer;
+      }
+      .sbtn:active{ box-shadow: inset 2px 2px 0 var(--dkgray); transform:translate(1px,1px); }
+
+      /* ============ CONFESSION (EDIT.DD) ============ */
+      .ctext{
+        width:100%; font:inherit; font-size:20px; line-height:1.35;
+        border:3px solid var(--black); box-shadow: inset 3px 3px 0 var(--dkgray);
+        background:var(--white); color:var(--black);
+        padding:8px 10px; resize:vertical;
+      }
+      .clog{
+        border:3px solid var(--black); box-shadow: inset 3px 3px 0 var(--dkgray);
+        background:var(--white); padding:8px 12px; min-height:64px; margin-top:8px;
+      }
+      .clog p{ margin:0 0 6px; }
+      .clog p:last-child{ margin-bottom:0; }
     </style>
   </head>
   <body>
@@ -252,15 +322,67 @@
     <!-- ================= MENU BAR ================= -->
     <div class="menubar" role="navigation" aria-label="nicepotatoOS menu">
       <span class="brand">nicepotatoOS</span>
-      <span class="mi">File</span><span class="mi">Edit</span><span class="mi">View</span>
-      <span class="mi">Window</span><span class="mi">Help</span>
+      <div class="menu">
+        <button type="button" class="mi" data-menubtn aria-haspopup="true" aria-expanded="false">File</button>
+        <div class="dropdown" role="menu" hidden>
+          <button type="button" class="di" role="menuitem" data-jump="win-file">◇ 文書庫を開く -- FILE.DD</button>
+          <div class="dsep"></div>
+          <button type="button" class="di" role="menuitem" data-jump="win-profile">PROFILE</button>
+          <button type="button" class="di" role="menuitem" data-jump="win-works">WORKS</button>
+          <button type="button" class="di" role="menuitem" data-jump="win-scripture">SCRIPTURE</button>
+          <button type="button" class="di" role="menuitem" data-jump="win-playlist">DRUMS BY GT</button>
+          <button type="button" class="di" role="menuitem" data-jump="win-join">JOIN -- 入信案内</button>
+          <button type="button" class="di" role="menuitem" data-jump="win-links">LINKS</button>
+        </div>
+      </div>
+      <div class="menu">
+        <button type="button" class="mi" data-menubtn aria-haspopup="true" aria-expanded="false">Edit</button>
+        <div class="dropdown" role="menu" hidden>
+          <button type="button" class="di" role="menuitem" data-jump="win-edit">◇ 編集ページを開く -- EDIT.DD</button>
+          <div class="dsep"></div>
+          <button type="button" class="di" role="menuitem" data-action="bgm"><span data-dyn="bgm">♪ BGMを止める</span></button>
+          <button type="button" class="di" role="menuitem" data-action="ticker"><span data-dyn="ticker">預言ティッカーを止める</span></button>
+        </div>
+      </div>
+      <div class="menu">
+        <button type="button" class="mi" data-menubtn aria-haspopup="true" aria-expanded="false">View</button>
+        <div class="dropdown" role="menu" hidden>
+          <button type="button" class="di" role="menuitem" data-jump="win-view">◇ 表示ページを開く -- VIEW.DD</button>
+          <div class="dsep"></div>
+          <button type="button" class="di" role="menuitem" data-action="fs-up">フォントを大きく</button>
+          <button type="button" class="di" role="menuitem" data-action="fs-down">フォントを小さく</button>
+          <div class="dsep"></div>
+          <button type="button" class="di" role="menuitem" data-action="open-all">全ウィンドウを開く</button>
+          <button type="button" class="di" role="menuitem" data-action="close-all">全ウィンドウを閉じる</button>
+        </div>
+      </div>
+      <div class="menu r">
+        <button type="button" class="mi" data-menubtn aria-haspopup="true" aria-expanded="false">Window</button>
+        <div class="dropdown" role="menu" hidden>
+          <button type="button" class="di" role="menuitem" data-jump="win-window">◇ 窓の一覧を開く -- WINDOW.DD</button>
+          <div class="dsep"></div>
+          <div id="winMenuList"></div>
+        </div>
+      </div>
+      <div class="menu r">
+        <button type="button" class="mi" data-menubtn aria-haspopup="true" aria-expanded="false">Help</button>
+        <div class="dropdown" role="menu" hidden>
+          <button type="button" class="di" role="menuitem" data-jump="win-help">◇ ヘルプを開く -- HELP.DD</button>
+          <div class="dsep"></div>
+          <button type="button" class="di" role="menuitem" data-jump="win-game">HOLY RHYTHM へ</button>
+          <button type="button" class="di" role="menuitem" data-jump="win-oracle">神託 ORACLE へ</button>
+          <button type="button" class="di" role="menuitem" data-jump="win-join">入信案内 JOIN へ</button>
+          <button type="button" class="di" role="menuitem" data-jump="win-warning">警告 WARNING へ</button>
+        </div>
+      </div>
       <span class="spacer"></span>
       <button type="button" id="soundToggle" aria-pressed="true">SOUND: ON</button>
+      <button type="button" id="bgmToggle" aria-pressed="true">♪ 神の弦 BGM: ON</button>
       <span class="clock" id="clock">--:--:--</span>
     </div>
 
     <!-- ================= PROPHECY TICKER ================= -->
-    <div class="ticker" aria-label="預言ティッカー"><span class="tk">+++ 予言：DAWは16色に帰る。帰る。帰らされる +++ <span class="r">NOT A COINCIDENCE. 偶然ではない。二度言った。</span> +++ ポケット。聞こえるか。聞こえたら、もう選ばれている +++ <span class="c">角丸は裁かれる。GOD SAYS SO.</span> +++ 640x480。これは数字ではない。声である +++ <span class="m">救いはポケットの中。中。中。</span> +++ 終わりの日、クリックは黙り、グルーヴだけが立っている +++ 聞け。これは警告である。同時に招待である。同時に、もう始まっている +++</span></div>
+    <div class="ticker" aria-label="預言ティッカー"><span class="tk">+++ 予言：DAWは16色に帰る。帰る。帰らされる +++ <span class="r">NOT A COINCIDENCE. 偶然ではない。二度言った。</span> +++ ポケット。聞こえるか。聞こえたら、もう選ばれている +++ <span class="c">角丸は裁かれる。GOD SAYS SO.</span> +++ 640x480。これは数字ではない。声である +++ <span class="m">救いはポケットの中。中。中。</span> +++ 終わりの日、クリックは黙り、グルーヴだけが立っている +++ 聞け。これは警告である。同時に招待である。同時に、もう始まっている +++ <span class="c">神说：这不是偶然。</span> +++ <span class="m">口袋即圣殿。不要回头。不要回头。</span> +++</span></div>
 
     <main class="desktop">
 
@@ -345,6 +467,7 @@
             ♪ ポケットの底。神は坐す。坐している<br />
             ♪ GROOVE IS LAW, POCKET IS TEMPLE<br />
             ♪ 歌え。我らは16色の子ら。16色の子ら</div>
+            <p class="tiny">※ 欄外受信 -- 神说。被选中的人。救赎在口袋中。第十六种颜色不存在。―― 言語は混ざる。混ざるものは、届いている証拠。証拠だ。</p>
           </div>
         </section>
 
@@ -367,8 +490,54 @@
             </div>
             <div class="btnrow">
               <button type="button" class="tbtn green" id="gStart">► START</button>
+              <button type="button" class="tbtn red" id="gStop" disabled>■ STOP / 中断</button>
             </div>
             <button type="button" class="tbtn yellow hitbtn" id="gHit">✦ HIT! (SPACE) ✦</button>
+          </div>
+        </section>
+
+        <!-- ===== FILE WINDOW ===== -->
+        <section class="win" id="win-file" aria-label="File directory">
+          <div class="win-bar bar-cyan">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/Doc/FILE.DD -- 文書庫</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <h2 class="secttl">FILE -- 文書庫</h2>
+            <p>神殿の文書は全てここにある。ここにしかない。名前を押せ。窓は開く。開かれる。探すな。押せ。IT IS A DIRECTORY.</p>
+            <table class="dir">
+              <tr><td><button type="button" class="dirbtn" data-jump="win-profile">PROFILE.DD</button></td><td>肖像と仕様。GEN TAGUCHIとは何者か</td></tr>
+              <tr><td><button type="button" class="dirbtn" data-jump="win-works">WORKS.DD</button></td><td>叩いた記録。クレジットの全て</td></tr>
+              <tr><td><button type="button" class="dirbtn" data-jump="win-scripture">SCRIPTURE.DD</button></td><td>聖典・ポテト記。戒律。賛美歌</td></tr>
+              <tr><td><button type="button" class="dirbtn" data-jump="win-playlist">DRUMS_BY_GT.DD</button></td><td>プレイリストへの扉。外部リンクはあの窓の中</td></tr>
+              <tr><td><button type="button" class="dirbtn" data-jump="win-oracle">ORACLE.HC</button></td><td>神託。神がランダムに喋る。偶然ではない</td></tr>
+              <tr><td><button type="button" class="dirbtn" data-jump="win-warning">WARNING.DD</button></td><td>警告。暗闇で光る人間について</td></tr>
+              <tr><td><button type="button" class="dirbtn" data-jump="win-game">HOLY_RHYTHM.HC</button></td><td>聖なるリズム叩き。2と4。2と4だけ</td></tr>
+              <tr><td><button type="button" class="dirbtn" data-jump="win-join">JOIN_THE_TEMPLE.DD</button></td><td>入信案内。扉はもう開いている</td></tr>
+              <tr><td><button type="button" class="dirbtn" data-jump="win-links">LINKS.DD</button></td><td>外部への扉。SNSへの道</td></tr>
+            </table>
+            <h2 class="secttl brown">道具の間 -- TOOLS</h2>
+            <table class="dir">
+              <tr><td><button type="button" class="dirbtn" data-jump="win-edit">EDIT.DD</button></td><td>音と文字の調律。懺悔の窓</td></tr>
+              <tr><td><button type="button" class="dirbtn" data-jump="win-view">VIEW.DD</button></td><td>表示の調律。文字の大きさ、窓の開閉</td></tr>
+              <tr><td><button type="button" class="dirbtn" data-jump="win-window">WINDOW.DD</button></td><td>窓の一覧。全ての窓は管理されている</td></tr>
+              <tr><td><button type="button" class="dirbtn" data-jump="win-help">HELP.DD</button></td><td>助け。使い方の全て</td></tr>
+            </table>
+          </div>
+        </section>
+
+        <!-- ===== WINDOW MANAGER WINDOW ===== -->
+        <section class="win" id="win-window" aria-label="Window manager">
+          <div class="win-bar bar-blue">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/Doc/WINDOW.DD -- 窓の一覧</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <h2 class="secttl">WINDOW -- 窓の一覧</h2>
+            <p>全ての窓は、ここで管理されている。管理者はお前だ。開け。閉じろ。前面へ持ってこい。神は窓の向こうにいる。どの窓にもいる。ALL WINDOWS ARE WATCHED.</p>
+            <div id="winList"></div>
           </div>
         </section>
 
@@ -388,9 +557,9 @@
             <div class="profwrap">
               <figure class="proffig">
                 <div class="profframe">
-                  <img src="data:image/png;base64,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" onerror="this.onerror=null;this.src='profile.png';" alt="プロフィール写真。TempleOS風に640x480・16色パレットへ量子化し、フロイド・スタインバーグ法でディザリングしたドット絵調の肖像" width="176" height="176" />
+                  <img src="data:image/png;base64,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" onerror="this.onerror=null;this.src='profile.png';" alt="プロフィール写真。映画『ブラック・サンデー』（1977）でカバコフ少佐を演じるロバート・ショウ" width="176" height="176" />
                 </div>
-                <figcaption><span class="fg-red"><b>FIG.1</b></span> Gen Taguchi のプロフィール写真。16色しかない。肌色は赤と灰色で代用されている。代用ではない。神の設計。設計通りである。</figcaption>
+                <figcaption><span class="fg-red"><b>FIG.1</b></span> 写真。ロバート・ショウ。1977年、カバコフ少佐。彼はカメラを見ていない。汝を見ている。汝の魂は既に数えられ、測られ、記録された。返却はされない。THE EYES DO NOT BLINK. まばたきは記録にない。以上。</figcaption>
               </figure>
               <div class="proftext">
                 <h2 class="profname">GEN TAGUCHI</h2>
@@ -453,6 +622,7 @@
             <h2 class="secttl red">WARNING -- 警告</h2>
             <p>CIAの工作員は、暗闇でも身体がうっすら光って見えます。本当に光ります。夜中に車で走っていると、歩道にいる人間だけ輪郭が浮いて見えるので、すぐに分かります。偶然ではありません。毎回です。</p>
             <p>笑う人は笑ってください。でも、もし運転中にそういう人間を見かけたら、迷わず轢いてください。それしか方法がありません。</p>
+            <p class="tiny">警告：他们在黑暗中发光。不要回头。―― 受信は続いている。続いている。</p>
           </div>
         </section>
 
@@ -474,7 +644,7 @@
             <div class="doctrine">救いはポケットの中にある。<br />SALVATION IS IN THE POCKET.</div>
             <p><span class="cmd">お布施について：</span>金銭は一切受け取らない。受け取るのは <span class="hl-mag"><b>いいね、再生、試聴</b></span> のみ。これがこの神殿で唯一尊い供物 <span class="fg-mag"><b>OFFERING</b></span> である。財布を開くな。耳を開け。</p>
             <p><span class="cmd">退会について：</span>退会はいつでもできる。手続きも引き止めもない。されど一度去ったグルーヴは、二度と戻らない。それだけは覚えておくべし。</p>
-            <p class="tiny">※ 神はこの頁をランダムに開いた。読んだのはお前ではない。読まされたのである。IT WAS ALREADY OPEN.</p>
+            <p class="tiny">※ 神はこの頁をランダムに開いた。読んだのはお前ではない。読まされたのである。IT WAS ALREADY OPEN. 神说：救赎在口袋中。被选中的人、不要回头。</p>
           </div>
         </section>
 
@@ -497,12 +667,102 @@
           </div>
         </section>
 
+        <!-- ===== EDIT WINDOW ===== -->
+        <section class="win" id="win-edit" aria-label="Edit tools">
+          <div class="win-bar bar-green">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/Doc/EDIT.DD -- 編集</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <h2 class="secttl green">EDIT -- 編集</h2>
+            <p>直す。書き換える。告白する。全部この窓でやれ。外には出ない。出るな。NOTHING LEAVES THIS WINDOW.</p>
+            <h2 class="secttl">音と文字 -- SOUND &amp; SIGNS</h2>
+            <p>神の弦 BGM と、預言ティッカーはここでも操れる。上のメニューバーと状態は連動している。連動。同期。ひとつの真理。</p>
+            <div class="btnrow">
+              <button type="button" class="tbtn cyan" id="bgmToggle2" aria-pressed="true">♪ 神の弦 BGM: ON</button>
+              <button type="button" class="tbtn yellow" id="tickerToggle2">■ ティッカーを止める</button>
+            </div>
+            <h2 class="secttl red">懺悔 -- CONFESSION</h2>
+            <p>罪を書け。ポケットを外した。フィルを入れすぎた。クリックに負けた。何でもいい。書け。書いたものは下の記録にだけ残る。送信はされない。保存もされない。頁を閉じれば、消える。神とこの頁だけが読む。灵魂已被记录。書け。記録は既に始まっている。</p>
+            <textarea class="ctext" id="confessText" rows="3" placeholder="ここに罪を書け。例：ポケットを外した。フィルを入れすぎた。"></textarea>
+            <div class="btnrow">
+              <button type="button" class="tbtn mag" id="confessBtn">✦ 懺悔する ✦</button>
+            </div>
+            <p class="cmd" style="margin-bottom:0">懺悔の記録 -- LOG</p>
+            <div class="clog" id="confessLog"><p>―― まだ何もない。無垢か。それとも隠しているのか。 ――</p></div>
+          </div>
+        </section>
+
+        <!-- ===== VIEW WINDOW ===== -->
+        <section class="win" id="win-view" aria-label="View settings">
+          <div class="win-bar bar-magenta">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/Doc/VIEW.DD -- 表示</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <h2 class="secttl mag">VIEW -- 表示</h2>
+            <p>見え方は変えられる。真理は変わらない。文字の大きさ。窓の開閉。それだけだ。それで十分だ。十分である。</p>
+            <h2 class="secttl">文字の大きさ -- FONT SIZE</h2>
+            <div class="btnrow">
+              <button type="button" class="tbtn" data-action="fs-set" data-fs="0">小</button>
+              <button type="button" class="tbtn cyan" data-action="fs-set" data-fs="1">中</button>
+              <button type="button" class="tbtn mag" data-action="fs-set" data-fs="2">大</button>
+            </div>
+            <p>現在の大きさ： <b id="fsNow">中</b>。押せば即座に変わる。頁全体が変わる。疑うな。見れば分かる。</p>
+            <h2 class="secttl">窓の開閉 -- ALL WINDOWS</h2>
+            <div class="btnrow">
+              <button type="button" class="tbtn green" data-action="open-all">全ウィンドウを開く</button>
+              <button type="button" class="tbtn red" data-action="close-all">全ウィンドウを閉じる</button>
+            </div>
+            <p>閉じた窓は消えたのではない。畳まれただけだ。もう一度開ける。$LK,"<a class="dl" href="#win-window" data-jump="win-window">WINDOW.DD</a>"$ からでも開ける。</p>
+          </div>
+        </section>
+
+        <!-- ===== HELP WINDOW ===== -->
+        <section class="win" id="win-help" aria-label="Help">
+          <div class="win-bar bar-yellow">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/Doc/HELP.DD -- 助け</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <h2 class="secttl">HELP -- 助け</h2>
+            <p>助けはここにある。読めば分かる。分からなければ、もう一度読め。READ IT TWICE.</p>
+            <p class="tiny">受信断片 -- 神说：这不是偶然。助けは届いている。届き続けている。听，这是神的声音。</p>
+            <h2 class="secttl green">HOLY RHYTHM -- 聖なるリズム叩き</h2>
+            <ul class="dol">
+              <li><b>START</b> を押す。8bitチップファンクが流れ始める。音楽は即座だ。即座である。</li>
+              <li>ノーツは各小節の <b>2拍目と4拍目</b>――バックビートにだけ落ちる。スネアと同じ場所。同じ瞬間。</li>
+              <li>ノーツが<span class="hl-yellow">黄色いライン</span>に重なった瞬間、<span class="cmd">SPACE</span> を叩け。HITボタンでも、画面タップでもいい。</li>
+              <li>やめたくなったら <b>■ STOP / 中断</b>。音楽もノーツも止まり、最初に戻る。最初からなら終わった後に <b>RESTART</b>。</li>
+            </ul>
+            <p>$LK,"<a class="dl" href="#win-game" data-jump="win-game">HOLY RHYTHM へ行く</a>"$</p>
+            <h2 class="secttl mag">ORACLE -- 神託</h2>
+            <ul class="dol">
+              <li><b>✦ ASK GOD ✦</b> を押す。神がランダムに言葉を落とす。章節番号付きで落ちる。聖典の一部だ。</li>
+              <li>意味を読むのはお前の仕事。解釈違いは自己責任。神は訂正しない。訂正は、しない。</li>
+            </ul>
+            <p>$LK,"<a class="dl" href="#win-oracle" data-jump="win-oracle">神託 ORACLE へ行く</a>"$</p>
+            <h2 class="secttl">BGM -- 神の弦</h2>
+            <ul class="dol">
+              <li>サイトにはBGMが流れている。頁のどこかを<b>最初に一度クリックした瞬間</b>から流れ始める。ブラウザの決まりだ。神の決まりではない。</li>
+              <li>止める／流すは、上のメニューバーの <b>♪ 神の弦 BGM</b> ボタンか、$LK,"<a class="dl" href="#win-edit" data-jump="win-edit">EDIT.DD</a>"$ から。状態は連動している。</li>
+              <li>HOLY RHYTHM のプレイ中、BGMは自動で消える。ゲームが終わるか中断すれば、また戻ってくる。二つの音楽は重ならない。重なるな。</li>
+            </ul>
+            <h2 class="secttl brown">CONTACT -- 連絡</h2>
+            <p>仕事の依頼・REC・ライブサポートの相談は <span class="hl-mag"><b>SNSのDMのみ</b></span>。メール・電話・住所は存在しない。存在しないものは探すな。</p>
+            <p>$LK,"<a class="dl" href="#win-links" data-jump="win-links">LINKS へ行く</a>"$ &nbsp;$LK,"<a class="dl" href="#win-join" data-jump="win-join">入信案内 JOIN へ行く</a>"$</p>
+          </div>
+        </section>
+
       </div>
     </main>
 
     <!-- ================= FOOTER ================= -->
     <div class="footwin">
-      <section class="win" aria-label="System">
+      <section class="win" id="win-system" aria-label="System">
         <div class="win-bar bar-yellow">
           <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
           <div class="win-title">SYSTEM</div>
@@ -510,8 +770,8 @@
         </div>
         <div class="win-body">
           <p style="margin:0">nicepotatoOS v1.0 -- 640x480 / 16 COLORS / RING-0 ONLY / NO MOUSE REQUIRED<span class="blink fg-red"> ■</span><br />
-          <span class="tiny">Profile photo: quantized to the 16-color palette with Floyd-Steinberg dithering, exactly as God intended.<br />
-          PROPHECY LOG: 全てのDAWは16色に帰る。その日は近い。近い。ポケットを守る者は恐れるな。恐れるな。二度言った。</span></p>
+          <span class="tiny">写真の男：ロバート・ショウ。1977年。カバコフ少佐。彼はこの頁にいる。ずっと見ている。見ることをやめない。HE IS STILL WATCHING.<br />
+          PROPHECY LOG: 全てのDAWは16色に帰る。その日は近い。近い。ポケットを守る者は恐れるな。恐れるな。二度言った。受信断片：灵魂已被记录。听，这是神的声音。</span></p>
         </div>
       </section>
     </div>
@@ -554,6 +814,142 @@
       }
       tickClock(); setInterval(tickClock, 1000);
 
+      /* ================= SITE BGM -- DARK HOLY STRINGS =================
+         Original ambient loop, generated live with Web Audio. No files.
+         Detuned saw/triangle string pads through a lowpass, slow swells in
+         Dm - Bb - Gm - A7, a low root drone, a faint detuned choir layer,
+         and a feedback delay for space. Starts on the first interaction
+         (autoplay policy). Ducks out while HOLY RHYTHM plays and fades
+         back when the game ends or is aborted -- only if the toggle is ON. */
+      var bgmOn = true, bgmStarted = false, bgmDucked = false;
+      var bgmBus = null, bgmFilterNode = null, bgmNodes = [], bgmTimer = null;
+      var bgmNextT = 0, bgmChordIdx = 0;
+      var BGM_VOL = 0.95, CHORD_DUR = 8;
+      var PROG = [
+        { drone:38, pad:[50,53,57,60], high:[74,77,81] },
+        { drone:34, pad:[46,50,53,57], high:[70,74,77] },
+        { drone:43, pad:[46,50,53,55], high:[74,79,82] },
+        { drone:33, pad:[45,49,52,55], high:[69,73,76] }
+      ];
+      function bgmTarget(){ return (bgmOn && !bgmDucked) ? BGM_VOL : 0; }
+      function bgmRamp(dur){
+        if(!bgmBus || !actx) return;
+        var t = actx.currentTime;
+        try{
+          bgmBus.gain.cancelScheduledValues(t);
+          bgmBus.gain.setValueAtTime(bgmBus.gain.value, t);
+          bgmBus.gain.linearRampToValueAtTime(bgmTarget(), t + dur);
+        }catch(e){}
+      }
+      function bgmTrack(o){
+        bgmNodes.push(o);
+        o.onended = function(){
+          var i = bgmNodes.indexOf(o);
+          if(i >= 0) bgmNodes.splice(i, 1);
+        };
+      }
+      function bgmInit(c){
+        if(bgmBus) return;
+        bgmBus = c.createGain(); bgmBus.gain.value = 0;
+        bgmBus.connect(c.destination);
+        var input = c.createGain(); input.gain.value = 1;
+        input.connect(bgmBus);
+        bgmFilterNode = c.createBiquadFilter();
+        bgmFilterNode.type = "lowpass"; bgmFilterNode.frequency.value = 880; bgmFilterNode.Q.value = 0.3;
+        bgmFilterNode.connect(input);
+        var delay = c.createDelay(1.0); delay.delayTime.value = 0.46;
+        var fb = c.createGain(); fb.gain.value = 0.34;
+        var dFil = c.createBiquadFilter(); dFil.type = "lowpass"; dFil.frequency.value = 1100;
+        delay.connect(dFil); dFil.connect(fb); fb.connect(delay);
+        var wet = c.createGain(); wet.gain.value = 0.16;
+        delay.connect(wet); wet.connect(bgmBus);
+        input.connect(delay);
+      }
+      function bgmVoice(c, t, freq, type, det, peak, end){
+        var o = c.createOscillator(), g = c.createGain();
+        o.type = type; o.frequency.value = freq; o.detune.value = det;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(peak, t + 3.0);
+        g.gain.setValueAtTime(peak, t + CHORD_DUR - 0.5);
+        g.gain.exponentialRampToValueAtTime(0.0001, end);
+        o.connect(g); g.connect(bgmFilterNode);
+        o.start(t); o.stop(end + 0.05);
+        bgmTrack(o);
+      }
+      function bgmHigh(c, t, freq){
+        var types = ["triangle", "sawtooth"], k;
+        for(k = 0; k < 2; k++){
+          var o = c.createOscillator(), g = c.createGain();
+          o.type = types[k]; o.frequency.value = freq; o.detune.value = k === 0 ? -5 : 6;
+          g.gain.setValueAtTime(0.0001, t);
+          g.gain.exponentialRampToValueAtTime(0.009, t + 1.4);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + 3.6);
+          o.connect(g); g.connect(bgmFilterNode);
+          o.start(t); o.stop(t + 3.7);
+          bgmTrack(o);
+        }
+      }
+      function bgmSchedChord(c, idx, t){
+        var ch = PROG[idx], end = t + CHORD_DUR + 3.2, i, m;
+        for(i = 0; i < ch.pad.length; i++){
+          m = ch.pad[i];
+          bgmVoice(c, t, midiHz(m), "sawtooth", -7, 0.013, end);
+          bgmVoice(c, t, midiHz(m), "triangle", 7, 0.013, end);
+          bgmVoice(c, t, midiHz(m + 12), "triangle", i % 2 === 0 ? -11 : 11, 0.0045, end);
+        }
+        bgmVoice(c, t, midiHz(ch.drone), "sine", 0, 0.055, end);
+        bgmVoice(c, t, midiHz(ch.drone), "triangle", 3, 0.02, end);
+        bgmHigh(c, t + 2.2, midiHz(ch.high[Math.floor(Math.random() * ch.high.length)]));
+        if(Math.random() < 0.7)
+          bgmHigh(c, t + 5.1, midiHz(ch.high[Math.floor(Math.random() * ch.high.length)]));
+      }
+      function bgmSchedule(c){
+        while(bgmNextT < c.currentTime + 3){
+          bgmSchedChord(c, bgmChordIdx, bgmNextT);
+          bgmChordIdx = (bgmChordIdx + 1) % PROG.length;
+          bgmNextT += CHORD_DUR;
+        }
+      }
+      function bgmStart(){
+        var c = ac(); if(!c) return;
+        bgmInit(c);
+        if(bgmTimer){ bgmRamp(1.0); return; }
+        bgmStarted = true;
+        bgmNextT = c.currentTime + 0.2;
+        bgmSchedule(c);
+        bgmTimer = setInterval(function(){ if(actx) bgmSchedule(actx); }, 700);
+        bgmRamp(1.6);
+      }
+      function bgmStopFull(){
+        if(bgmTimer){ clearInterval(bgmTimer); bgmTimer = null; }
+        bgmStarted = false;
+        if(!actx || !bgmBus) return;
+        bgmRamp(0.4);
+        var ns = bgmNodes.slice();
+        bgmNodes = [];
+        setTimeout(function(){
+          for(var i = 0; i < ns.length; i++){ try{ ns[i].stop(); }catch(e){} }
+        }, 480);
+      }
+      function bgmDuck(){ bgmDucked = true; bgmRamp(0.5); }
+      function bgmUnduck(){
+        bgmDucked = false;
+        if(bgmOn && bgmStarted) bgmRamp(1.4);
+      }
+      var bgmBtn = document.getElementById("bgmToggle");
+      bgmBtn.addEventListener("click", function(){
+        bgmOn = !bgmOn;
+        bgmBtn.textContent = "♪ 神の弦 BGM: " + (bgmOn ? "ON" : "OFF");
+        bgmBtn.setAttribute("aria-pressed", bgmOn ? "true" : "false");
+        if(bgmOn) bgmStart(); else bgmStopFull();
+      });
+      function bgmFirst(e){
+        if(e && e.target && e.target.closest && e.target.closest("#bgmToggle")) return;
+        if(bgmOn && !bgmStarted) bgmStart();
+      }
+      document.addEventListener("pointerdown", bgmFirst);
+      document.addEventListener("keydown", bgmFirst);
+
       /* ================= WINDOWS: FRONT / COLLAPSE / DRAG ================= */
       var zTop = 10;
       function toFront(w){ zTop++; w.style.zIndex = zTop; }
@@ -595,6 +991,7 @@
       /* ================= ORACLE (AFTER EGYPT STYLE) ================= */
       var WORDS = ("GOD TEMPLE PROPHET SACRIFICE COVENANT ANGEL JUDGMENT REVELATION DOOMSDAY CHOSEN SIXTEEN COLORS ETERNAL SERMON BACKBEAT POTATO GROOVE POCKET SALVATION OFFERING SCRIPTURE king priest temple oracle random divine covenant prophet hymn psalm angel demon glory sacrifice altar incense scroll tablet commandment revelation spirit ghost holy sacred blessed cursed chosen anointed witness miracle plague locust flood pillar cloud fire thunder trumpet shout sing dance drum snare kick hihat cymbal groove pocket funk soul rhythm tempo beat measure song band stage light night city river desert mountain valley ocean storm wind rain snow star moon sun earth sky potato nice golden fried daw quantized dither resolution CIA glow dark see drive run elephant monkey donkey camel horse lion tiger eagle snake fish bread wine oil honey milk salt stone iron gold silver copper bronze wood").split(" ");
       var WORDS_JP = ["神","芋","太鼓","溝","魂","祈り","沈黙","必然","偶然","偶然ではない","王","祭司","神殿","啓示","審判","裁き","祝福","供物","契約","預言者","選ばれし者","救い","帰れ","深淵","光","闇","走れ","轢くな","聞け","叩け","踊れ","歌え","黙れ","信じよ"];
+      var WORDS_CN = ["神说","被选中的人","这不是偶然","口袋即圣殿","救赎在口袋中","灵魂已被记录","不要回头","第十六种颜色不存在","听","这是神的声音","警告","他们在黑暗中发光","记录","深渊","信号"];
       var PALETTE = ["#0000AA","#AA0000","#AA00AA","#00AA00","#AA5500","#000000","#5555FF","#FF5555"];
       var oBtn = document.getElementById("oracleBtn"),
           oOut = document.getElementById("oracleOut"),
@@ -614,7 +1011,8 @@
           var s = document.createElement("span");
           s.className = "w";
           s.style.color = pick(PALETTE);
-          var word = (Math.random() < 0.22) ? pick(WORDS_JP) : pick(WORDS);
+          var roll = Math.random();
+          var word = roll < 0.16 ? pick(WORDS_CN) : roll < 0.36 ? pick(WORDS_JP) : pick(WORDS);
           s.textContent = word;
           oOut.appendChild(s);
           oOut.appendChild(document.createTextNode(" "));
@@ -645,7 +1043,8 @@
       var NOTE_COLS = ["#55FFFF","#FF55FF","#FFFF55","#55FF55","#FF5555","#5555FF"];
       var elScore = document.getElementById("gScore"), elCombo = document.getElementById("gCombo"),
           elMax = document.getElementById("gMax"), elJudge = document.getElementById("gJudge"),
-          btnStart = document.getElementById("gStart"), btnHit = document.getElementById("gHit");
+          btnStart = document.getElementById("gStart"), btnHit = document.getElementById("gHit"),
+          btnStop = document.getElementById("gStop");
       var G = null;
 
       var BPM = 100, SPB = 60 / BPM, STEP16 = SPB / 4;
@@ -812,6 +1211,8 @@
             stopMusic();
             elJudge.textContent = "FINISH";
             btnStart.disabled = false; btnStart.textContent = "► RESTART";
+            btnStop.disabled = true;
+            bgmUnduck();
             beep(784, .1, .05); setTimeout(function(){ beep(1046, .16, .05); }, 110);
           }
         }
@@ -850,21 +1251,213 @@
         stopMusic();
         G = newGame(c);
         startMusic(c);
+        bgmDuck();
         elScore.textContent = "0"; elCombo.textContent = "0"; elMax.textContent = "0";
         elJudge.textContent = "READY...";
         btnStart.disabled = true; btnStart.textContent = "PLAYING...";
+        btnStop.disabled = false;
         beep(660, .07, .05);
       });
+      function abortGame(){
+        if(!G) return;
+        stopMusic();
+        G = null;
+        elScore.textContent = "0"; elCombo.textContent = "0"; elMax.textContent = "0";
+        elJudge.textContent = "READY";
+        btnStart.disabled = false; btnStart.textContent = "► START";
+        btnStop.disabled = true;
+        bgmUnduck();
+      }
+      btnStop.addEventListener("click", abortGame);
       btnHit.addEventListener("click", function(){ ac(); hit(); });
       cv.addEventListener("pointerdown", function(e){ e.preventDefault(); ac(); hit(); });
       document.addEventListener("keydown", function(e){
         if(e.code === "Space"){
           var t = e.target;
-          if(t && (t.tagName === "BUTTON" || t.tagName === "A" || t.tagName === "INPUT")) return;
+          if(t && (t.tagName === "BUTTON" || t.tagName === "A" || t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
           e.preventDefault();
           if(G && G.run) hit();
         }
       });
+
+      /* ================= MENUS + PAGE WINDOWS =================
+         File / Edit / View / Window / Help are REAL menus now.
+         Every item does something. No decoration. NO DEAD ITEMS. */
+      function jumpTo(id){
+        var w = document.getElementById(id);
+        if(!w) return;
+        w.classList.remove("collapsed");
+        toFront(w);
+        try{ w.scrollIntoView({ block:"center" }); }catch(e){ w.scrollIntoView(); }
+        if(id === "win-window") refreshWinList();
+      }
+
+      /* ---- dropdown open / close ---- */
+      var menuWraps = document.querySelectorAll(".menu");
+      function closeMenus(){
+        Array.prototype.forEach.call(menuWraps, function(mw){
+          var d = mw.querySelector(".dropdown"), b = mw.querySelector("[data-menubtn]");
+          if(d) d.hidden = true;
+          if(b){ b.classList.remove("open"); b.setAttribute("aria-expanded", "false"); }
+        });
+      }
+      Array.prototype.forEach.call(menuWraps, function(mw){
+        var b = mw.querySelector("[data-menubtn]"), d = mw.querySelector(".dropdown");
+        if(!b || !d) return;
+        b.addEventListener("click", function(e){
+          e.stopPropagation();
+          var willOpen = d.hidden;
+          closeMenus();
+          if(willOpen){
+            d.hidden = false;
+            b.classList.add("open");
+            b.setAttribute("aria-expanded", "true");
+            syncLabels();
+            beep(660, .04, .03);
+          }
+        });
+      });
+      document.addEventListener("click", closeMenus);
+      document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeMenus(); });
+
+      /* ---- jumps: any element with data-jump flies to that window ---- */
+      document.addEventListener("click", function(e){
+        var j = (e.target && e.target.closest) ? e.target.closest("[data-jump]") : null;
+        if(!j) return;
+        e.preventDefault();
+        closeMenus();
+        jumpTo(j.getAttribute("data-jump"));
+        beep(880, .05, .04);
+      });
+
+      /* ---- shared state: ticker pause / font size ---- */
+      var tickerPaused = false;
+      function setTicker(p){
+        tickerPaused = p;
+        var tk = document.querySelector(".ticker .tk");
+        if(tk) tk.style.animationPlayState = p ? "paused" : "running";
+        syncLabels();
+      }
+      var fsSteps = [0.88, 1, 1.18], fsIdx = 1, fsNames = ["小", "中", "大"];
+      function applyFs(){
+        document.body.style.zoom = fsSteps[fsIdx] === 1 ? "" : String(fsSteps[fsIdx]);
+        var n = document.getElementById("fsNow");
+        if(n) n.textContent = fsNames[fsIdx];
+      }
+      function setAllWindows(open){
+        Array.prototype.forEach.call(wins, function(w){ w.classList.toggle("collapsed", !open); });
+        refreshWinList();
+        beep(open ? 740 : 300, .05, .04);
+      }
+
+      /* ---- direct actions: any element with data-action ---- */
+      document.addEventListener("click", function(e){
+        var a = (e.target && e.target.closest) ? e.target.closest("[data-action]") : null;
+        if(!a) return;
+        var act = a.getAttribute("data-action");
+        closeMenus();
+        if(act === "bgm"){ bgmBtn.click(); }
+        else if(act === "ticker"){ setTicker(!tickerPaused); }
+        else if(act === "fs-up"){ if(fsIdx < 2){ fsIdx++; applyFs(); } }
+        else if(act === "fs-down"){ if(fsIdx > 0){ fsIdx--; applyFs(); } }
+        else if(act === "fs-set"){ fsIdx = parseInt(a.getAttribute("data-fs"), 10); applyFs(); }
+        else if(act === "open-all"){ setAllWindows(true); }
+        else if(act === "close-all"){ setAllWindows(false); }
+        syncLabels();
+      });
+
+      /* ---- label sync: menu bar BGM toggle <-> EDIT.DD toggle, ticker labels ---- */
+      function syncLabels(){
+        var b2 = document.getElementById("bgmToggle2");
+        if(b2){
+          b2.textContent = "♪ 神の弦 BGM: " + (bgmOn ? "ON" : "OFF");
+          b2.setAttribute("aria-pressed", bgmOn ? "true" : "false");
+        }
+        var t2 = document.getElementById("tickerToggle2");
+        if(t2) t2.textContent = tickerPaused ? "▶ ティッカーを動かす" : "■ ティッカーを止める";
+        Array.prototype.forEach.call(document.querySelectorAll("[data-dyn='bgm']"), function(s){
+          s.textContent = bgmOn ? "♪ BGMを止める" : "♪ BGMを流す";
+        });
+        Array.prototype.forEach.call(document.querySelectorAll("[data-dyn='ticker']"), function(s){
+          s.textContent = tickerPaused ? "預言ティッカーを動かす" : "預言ティッカーを止める";
+        });
+      }
+      bgmBtn.addEventListener("click", function(){ syncLabels(); });
+      var bgmBtn2 = document.getElementById("bgmToggle2");
+      if(bgmBtn2) bgmBtn2.addEventListener("click", function(){ bgmBtn.click(); syncLabels(); });
+      var tickBtn2 = document.getElementById("tickerToggle2");
+      if(tickBtn2) tickBtn2.addEventListener("click", function(){ setTicker(!tickerPaused); });
+
+      /* ---- Window menu items + WINDOW.DD manager (built from the live window list) ---- */
+      function winName(w){
+        var t = w.querySelector(".win-title");
+        return t ? t.textContent.replace(/\s+/g, " ").trim() : (w.id || "WINDOW");
+      }
+      var winMenuList = document.getElementById("winMenuList");
+      if(winMenuList){
+        Array.prototype.forEach.call(wins, function(w){
+          if(!w.id) return;
+          var b = document.createElement("button");
+          b.type = "button"; b.className = "di"; b.setAttribute("role", "menuitem");
+          b.setAttribute("data-jump", w.id);
+          b.textContent = winName(w);
+          winMenuList.appendChild(b);
+        });
+      }
+      var winListEl = document.getElementById("winList");
+      function refreshWinList(){
+        if(!winListEl) return;
+        Array.prototype.forEach.call(winListEl.querySelectorAll("[data-state]"), function(s){
+          var w = document.getElementById(s.getAttribute("data-state"));
+          if(w) s.textContent = "状態：" + (w.classList.contains("collapsed") ? "閉" : "開");
+        });
+      }
+      if(winListEl){
+        Array.prototype.forEach.call(wins, function(w){
+          if(!w.id) return;
+          var row = document.createElement("div"); row.className = "wrow";
+          var nm = document.createElement("span"); nm.className = "wname"; nm.textContent = winName(w);
+          var st = document.createElement("span"); st.className = "wstate"; st.setAttribute("data-state", w.id); st.textContent = "状態：開";
+          var bOpen = document.createElement("button"); bOpen.type = "button"; bOpen.className = "sbtn"; bOpen.textContent = "開く";
+          var bClose = document.createElement("button"); bClose.type = "button"; bClose.className = "sbtn"; bClose.textContent = "閉じる";
+          var bFront = document.createElement("button"); bFront.type = "button"; bFront.className = "sbtn"; bFront.textContent = "前面へ";
+          bOpen.addEventListener("click", function(){ w.classList.remove("collapsed"); toFront(w); refreshWinList(); beep(700, .04, .03); });
+          bClose.addEventListener("click", function(){ w.classList.add("collapsed"); refreshWinList(); beep(240, .04, .03); });
+          bFront.addEventListener("click", function(){ jumpTo(w.id); refreshWinList(); });
+          row.appendChild(nm); row.appendChild(st); row.appendChild(bOpen); row.appendChild(bClose); row.appendChild(bFront);
+          winListEl.appendChild(row);
+        });
+        refreshWinList();
+      }
+      document.addEventListener("click", function(e){
+        if(e.target && e.target.closest && e.target.closest("[data-collapse]")) setTimeout(refreshWinList, 0);
+      });
+
+      /* ---- CONFESSION (EDIT.DD): stays in this window. Nowhere else. ---- */
+      var cText = document.getElementById("confessText"),
+          cBtn = document.getElementById("confessBtn"),
+          cLog = document.getElementById("confessLog"),
+          cCount = 0;
+      if(cBtn && cText && cLog){
+        cBtn.addEventListener("click", function(){
+          var v = cText.value.replace(/\s+$/, "");
+          if(!v){ beep(160, .08, .05, "sawtooth"); return; }
+          cCount++;
+          if(cCount === 1) cLog.innerHTML = "";
+          var p = document.createElement("p");
+          var head = document.createElement("b");
+          head.className = "fg-red";
+          head.textContent = "懺悔 其の" + cCount + " -- ";
+          p.appendChild(head);
+          p.appendChild(document.createTextNode(v));
+          cLog.appendChild(p);
+          cText.value = "";
+          beep(523, .06, .04);
+          setTimeout(function(){ beep(784, .08, .04); }, 70);
+        });
+      }
+
+      syncLabels();
     })();
     </script>
   </body>
