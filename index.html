@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="data:," />
+    <title>nicepotatoOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=DotGothic16&display=swap" rel="stylesheet" />
+    <style>
+      /* ============ TEMPLEOS 16-COLOR PALETTE. NOTHING ELSE EXISTS. ============ */
+      :root{
+        --black:#000000; --blue:#0000AA; --green:#00AA00; --cyan:#00AAAA;
+        --red:#AA0000; --magenta:#AA00AA; --brown:#AA5500; --ltgray:#AAAAAA;
+        --dkgray:#555555; --ltblue:#5555FF; --ltgreen:#55FF55; --ltcyan:#55FFFF;
+        --ltred:#FF5555; --ltmagenta:#FF55FF; --yellow:#FFFF55; --white:#FFFFFF;
+        color-scheme: light;
+      }
+      *{ box-sizing:border-box; border-radius:0 !important; }
+      html{ scroll-behavior:auto; }
+      body{
+        margin:0;
+        background:var(--cyan);
+        background-image:
+          repeating-linear-gradient(0deg, rgba(0,0,0,.14) 0 2px, transparent 2px 4px),
+          repeating-linear-gradient(90deg, rgba(0,0,0,.14) 0 2px, transparent 2px 4px);
+        color:var(--black);
+        font-family:"VT323","DotGothic16",monospace;
+        font-smooth:never;
+        -webkit-font-smoothing:none;
+        overflow-x:hidden;
+      }
+      ::selection{ background:var(--magenta); color:var(--white); }
+
+      /* ============ TOP MENU BAR (FIXED, LIKE GOD INTENDED) ============ */
+      .menubar{
+        position:sticky; top:0; z-index:999;
+        background:var(--ltcyan);
+        border-bottom:3px solid var(--black);
+        display:flex; align-items:center; gap:2px; flex-wrap:wrap;
+        padding:2px 6px;
+        font-size:20px; line-height:1;
+      }
+      .menubar .mi{ padding:4px 8px; min-height:32px; display:inline-flex; align-items:center; }
+      .menubar .mi:hover{ background:var(--blue); color:var(--white); }
+      .menubar .brand{ background:var(--black); color:var(--yellow); font-weight:bold; padding:4px 10px; }
+      .menubar .spacer{ flex:1; }
+      .menubar .clock{ background:var(--white); border:2px solid var(--black); padding:2px 8px; font-weight:bold; }
+      .menubar button{
+        font:inherit; background:var(--ltgray); color:var(--black);
+        border:2px solid var(--black);
+        box-shadow: inset -2px -2px 0 var(--dkgray), inset 2px 2px 0 var(--white);
+        padding:2px 10px; min-height:32px; cursor:pointer;
+      }
+      .menubar button:active{ box-shadow: inset 2px 2px 0 var(--dkgray); transform:translate(1px,1px); }
+
+      /* ============ DESKTOP ============ */
+      .desktop{
+        max-width:1120px; margin:0 auto; padding:22px 14px 30px;
+        display:grid; grid-template-columns:1.18fr .82fr; gap:20px;
+        align-items:start;
+      }
+      .col{ display:grid; gap:20px; align-items:start; min-width:0; }
+      .overlap{ margin-top:-34px; }
+      @media (max-width:820px){
+        .desktop{ grid-template-columns:1fr; }
+        .overlap{ margin-top:0; }
+      }
+
+      /* ============ WINDOWS: GAUDY 3D BORDERS, ZERO ROUNDING ============ */
+      .win{
+        background:var(--white);
+        border:3px solid var(--black);
+        box-shadow:
+          inset 0 0 0 2px var(--ltgray),
+          inset 0 0 0 4px var(--white),
+          10px 10px 0 rgba(0,0,0,.45);
+        position:relative; min-width:0; max-width:100%;
+      }
+      .win-bar{
+        display:flex; align-items:center; gap:6px;
+        border-bottom:3px solid var(--black);
+        padding:3px 6px;
+        cursor:grab; user-select:none; -webkit-user-select:none; touch-action:none;
+      }
+      .win-bar:active{ cursor:grabbing; }
+      .bar-yellow{ background:var(--yellow); } .bar-cyan{ background:var(--ltcyan); }
+      .bar-magenta{ background:var(--ltmagenta); } .bar-green{ background:var(--ltgreen); }
+      .bar-red{ background:var(--ltred); } .bar-blue{ background:var(--ltblue); color:var(--white); }
+      .bar-gray{ background:var(--ltgray); }
+      .win-title{
+        flex:1; min-width:0; text-align:center; font-size:21px; font-weight:bold; letter-spacing:1px;
+        white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      }
+      .win-btn{
+        width:32px; height:32px; flex:0 0 32px;
+        font-family:inherit; font-size:18px; font-weight:bold; line-height:1;
+        background:var(--ltgray); color:var(--black);
+        border:2px solid var(--black);
+        box-shadow: inset -2px -2px 0 var(--dkgray), inset 2px 2px 0 var(--white);
+        cursor:pointer; padding:0;
+      }
+      .win-btn:active{ box-shadow: inset 2px 2px 0 var(--dkgray); }
+      .win-body{ padding:12px 14px 14px; font-size:20px; line-height:1.4; }
+      .win-body p{ margin:0 0 10px; }
+      .collapsed .win-body{ display:none; }
+
+      /* ============ DOLDOC ELEMENTS ============ */
+      a.dl{ color:var(--magenta); font-weight:bold; text-decoration:underline; text-underline-offset:2px; }
+      a.dl:hover{ background:var(--magenta); color:var(--white); }
+      a.dl:active{ background:var(--red); }
+      .cmd{ color:var(--blue); font-weight:bold; }
+      .fg-red{ color:var(--red); } .fg-blue{ color:var(--blue); } .fg-mag{ color:var(--magenta); }
+      .fg-green{ color:var(--green); } .fg-brown{ color:var(--brown); }
+      .hl-yellow{ background:var(--yellow); padding:0 4px; }
+      .hl-cyan{ background:var(--ltcyan); padding:0 4px; }
+      .hl-mag{ background:var(--ltmagenta); padding:0 4px; }
+      .blink{ animation:blink 1s steps(1) infinite; }
+      @keyframes blink{ 50%{ opacity:0; } }
+      @media (prefers-reduced-motion: reduce){
+        .blink{ animation:none; }
+      }
+      .cursor{
+        display:inline-block; width:.62em; height:1em; vertical-align:-.12em;
+        background:var(--black);
+        animation:blink 1s steps(1) infinite;
+      }
+      @media (prefers-reduced-motion: reduce){ .cursor{ animation:none; } }
+
+      h1,h2{ font-family:inherit; margin:0; }
+      .secttl{
+        font-size:22px; font-weight:bold; color:var(--white);
+        background:var(--blue); padding:2px 8px; margin:14px 0 8px; letter-spacing:1px;
+      }
+      .secttl:first-child{ margin-top:0; }
+      .secttl.red{ background:var(--red); } .secttl.mag{ background:var(--magenta); }
+      .secttl.green{ background:var(--green); } .secttl.brown{ background:var(--brown); }
+
+      ul.dol{ list-style:none; margin:0 0 6px; padding:0; }
+      ul.dol li{ padding:3px 0 3px 22px; position:relative; border-bottom:2px dotted var(--ltgray); }
+      ul.dol li::before{ content:"►"; position:absolute; left:2px; color:var(--red); }
+      ul.dol li:last-child{ border-bottom:none; }
+
+      /* ============ ASCII / TITLE ============ */
+      pre.ascii{
+        margin:0; font-family:"VT323",monospace; line-height:1.02;
+        font-size:clamp(7px,2.5vw,14px); color:var(--blue);
+        white-space:pre; overflow:hidden; max-width:100%;
+      }
+      pre.ascii .m{ color:var(--magenta); } pre.ascii .r{ color:var(--red); } pre.ascii .g{ color:var(--green); }
+      .bigtitle{ font-size:clamp(38px,7vw,58px); line-height:.95; color:var(--red); letter-spacing:1px; }
+      .bigtitle .os{ color:var(--blue); }
+      .tagline{ font-size:22px; }
+      .promptline{ background:var(--black); color:var(--ltgreen); padding:8px 10px; font-size:20px; margin-top:10px; }
+      .promptline .p{ color:var(--yellow); }
+
+      /* ============ PROFILE ============ */
+      .profwrap{ display:flex; gap:14px; flex-wrap:wrap; }
+      .proffig{ margin:0; flex:0 0 auto; }
+      .profframe{
+        border:3px solid var(--black);
+        box-shadow: inset 0 0 0 2px var(--yellow), 6px 6px 0 var(--magenta);
+        background:
+          repeating-conic-gradient(var(--ltblue) 0% 25%, var(--ltred) 0% 50%) 0 0/16px 16px;
+        padding:6px; line-height:0;
+      }
+      .profframe img{
+        width:176px; height:176px; display:block;
+        image-rendering:pixelated; image-rendering:crisp-edges;
+        border:2px solid var(--black); background:var(--dkgray);
+      }
+      .proffig figcaption{ font-size:16px; line-height:1.25; margin-top:8px; max-width:196px; }
+      .proftext{ flex:1 1 220px; min-width:200px; }
+      .profname{ font-size:34px; line-height:1; color:var(--blue); }
+      table.spec{ border-collapse:collapse; width:100%; font-size:19px; }
+      table.spec th, table.spec td{ border:2px solid var(--black); padding:3px 8px; text-align:left; vertical-align:top; }
+      table.spec th{ background:var(--yellow); width:34%; }
+      table.spec tr:nth-child(even) td{ background:#EEEEEE; }
+
+      /* ============ BIG TEMPLE BUTTONS ============ */
+      .tbtn{
+        font-family:inherit; font-size:22px; font-weight:bold; letter-spacing:1px;
+        background:var(--ltgray); color:var(--black);
+        border:3px solid var(--black);
+        box-shadow: inset -3px -3px 0 var(--dkgray), inset 3px 3px 0 var(--white), 4px 4px 0 rgba(0,0,0,.4);
+        padding:8px 16px; min-height:48px; cursor:pointer; text-decoration:none;
+        display:inline-flex; align-items:center; gap:8px;
+      }
+      .tbtn:active{ box-shadow: inset 3px 3px 0 var(--dkgray); transform:translate(2px,2px); }
+      .tbtn:disabled{ opacity:.45; cursor:wait; transform:none; }
+      .tbtn.green{ background:var(--ltgreen); } .tbtn.cyan{ background:var(--ltcyan); }
+      .tbtn.mag{ background:var(--ltmagenta); } .tbtn.yellow{ background:var(--yellow); }
+      .btnrow{ display:flex; flex-wrap:wrap; gap:12px; margin:10px 0 4px; }
+
+      /* ============ ORACLE ============ */
+      .oracle-out{
+        border:3px solid var(--black);
+        box-shadow: inset 3px 3px 0 var(--dkgray);
+        background:var(--white);
+        min-height:150px; padding:10px 12px; font-size:24px; line-height:1.45;
+        word-break:break-word;
+      }
+      .oracle-out .w{ font-weight:bold; }
+      .oracle-meta{ font-size:17px; color:var(--dkgray); margin-top:6px; }
+
+      /* ============ RHYTHM GAME ============ */
+      .gamebox{ border:3px solid var(--black); box-shadow: inset 3px 3px 0 var(--dkgray); background:var(--black); line-height:0; }
+      canvas#game{ width:100%; height:auto; display:block; }
+      .gamehud{ display:flex; flex-wrap:wrap; gap:8px 18px; font-size:21px; margin-top:8px; }
+      .gamehud b{ color:var(--red); }
+      .hitbtn{ width:100%; justify-content:center; font-size:26px; margin-top:10px; }
+
+      /* ============ FOOTER / PROMPT ============ */
+      .footwin{ max-width:1120px; margin:0 auto 26px; padding:0 14px; }
+      .tiny{ font-size:16px; color:var(--dkgray); }
+      .divider{ border:none; border-top:3px solid var(--black); margin:10px 0; }
+    </style>
+  </head>
+  <body>
+
+    <!-- ================= MENU BAR ================= -->
+    <div class="menubar" role="navigation" aria-label="nicepotatoOS menu">
+      <span class="brand">nicepotatoOS</span>
+      <span class="mi">File</span><span class="mi">Edit</span><span class="mi">View</span>
+      <span class="mi">Window</span><span class="mi">Help</span>
+      <span class="spacer"></span>
+      <button type="button" id="soundToggle" aria-pressed="true">SOUND: ON</button>
+      <span class="clock" id="clock">--:--:--</span>
+    </div>
+
+    <main class="desktop">
+
+      <!-- ================= LEFT COLUMN ================= -->
+      <div class="col">
+
+        <!-- ===== TITLE WINDOW ===== -->
+        <section class="win" id="win-title" aria-label="Title">
+          <div class="win-bar bar-yellow">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">C:/Home -- nicepotatoOS.HC</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <pre class="ascii" aria-hidden="true">█▄ █ █ ▄▀▀ █▀▀   █▀█ █▀█ ▀█▀ ▄▀█ ▀█▀ █▀█
+█ ▀█ █ █▄▄ ██▄   █▀▀ █▄█  █  █▀█  █  █▄█
+              <span class="m">█▀█ █▀</span>   <span class="r">v1.0  640x480  16 COLORS</span>
+              <span class="m">█▄█ ▄█</span>   <span class="g">GOD IS THE OS. I AM THE DRUMMER.</span></pre>
+            <h1 class="bigtitle">nicepotato<span class="os">OS</span></h1>
+            <p class="tagline"><span class="hl-yellow"><b>GEN TAGUCHI</b></span> -- DRUMMER. POCKET FIRST. GROOVE IS LAW.<br />
+            ここはドラマー <b>Gen Taguchi</b> の神殿。モダンなUIは立ち入り禁止。角丸もグラデーションも存在しない。16色で十分だ。</p>
+            <p>$LK,"<a class="dl" href="#win-profile">PROFILE</a>"$ &nbsp;$LK,"<a class="dl" href="#win-works">WORKS</a>"$ &nbsp;$LK,"<a class="dl" href="#win-playlist">DRUMS_BY_GT</a>"$ &nbsp;$LK,"<a class="dl" href="#win-oracle">ORACLE</a>"$ &nbsp;$LK,"<a class="dl" href="#win-game">HOLY_RHYTHM</a>"$ &nbsp;$LK,"<a class="dl" href="#win-links">LINKS</a>"$</p>
+            <div class="promptline"><span class="p">C:\Home&gt;</span> DrumsByGT<span class="cursor" aria-hidden="true"></span></div>
+          </div>
+        </section>
+
+        <!-- ===== WORKS WINDOW ===== -->
+        <section class="win overlap" id="win-works" aria-label="Works">
+          <div class="win-bar bar-magenta">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/Doc/WORKS.DD</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <h2 class="secttl">WORKS / CREDITS</h2>
+            <ul class="dol">
+              <li><b>Wave Rhythm Section</b> <span class="fg-blue">(ドラム)</span> -- 東京のグルーヴバンド、8人編成。J-Pop / R&amp;B / Soul。参加曲：「<span class="fg-red">Ah! Key Got Cool it's Soul (feat. Arthur)</span>」「<span class="fg-red">Can You Feel It?</span>」ほか、アルバム『Wave Rhythm Section』</li>
+              <li><b>ニシナオキ</b> <span class="fg-blue">(ドラム)</span> -- 「<span class="fg-red">Pool Side</span>」</li>
+              <li><b>Naybally</b> <span class="fg-blue">(ドラム参加)</span></li>
+              <li><b>FLANKRE</b> <span class="fg-blue">(ドラム参加)</span></li>
+              <li><b>Reugene</b> <span class="fg-blue">(ドラム参加)</span></li>
+              <li><b>蒼イ</b> <span class="fg-blue">(ドラム参加)</span></li>
+              <li><b>aint lindy</b> <span class="fg-mag">(ライブサポート経験あり)</span></li>
+            </ul>
+            <p class="tiny">※ 全クレジットは $LK,"<a class="dl" href="#win-playlist">DRUMS BY GT</a>"$ プレイリストで試聴可能。</p>
+          </div>
+        </section>
+
+        <!-- ===== RHYTHM GAME WINDOW ===== -->
+        <section class="win" id="win-game" aria-label="Holy Rhythm game">
+          <div class="win-bar bar-green">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/Adam/Games/HolyRhythm.HC</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <h2 class="secttl green">HOLY RHYTHM -- 聖なるリズム叩き</h2>
+            <p>落ちてくるノーツが<span class="hl-yellow">黄色いライン</span>に重なった瞬間に <span class="cmd">SPACE</span> を叩け。タップでも可。ポケットを外す者は神に許されぬ。</p>
+            <div class="gamebox"><canvas id="game" width="520" height="320"></canvas></div>
+            <div class="gamehud">
+              <span>SCORE <b id="gScore">0</b></span>
+              <span>COMBO <b id="gCombo">0</b></span>
+              <span>MAX <b id="gMax">0</b></span>
+              <span id="gJudge" aria-live="polite">READY</span>
+            </div>
+            <div class="btnrow">
+              <button type="button" class="tbtn green" id="gStart">► START</button>
+            </div>
+            <button type="button" class="tbtn yellow hitbtn" id="gHit">✦ HIT! (SPACE) ✦</button>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ================= RIGHT COLUMN ================= -->
+      <div class="col">
+
+        <!-- ===== PROFILE WINDOW ===== -->
+        <section class="win" id="win-profile" aria-label="Profile">
+          <div class="win-bar bar-cyan">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/Doc/PROFILE.DD</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <div class="profwrap">
+              <figure class="proffig">
+                <div class="profframe">
+                  <img src="data:image/png;base64,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" onerror="this.onerror=null;this.src='profile.png';" alt="プロフィール写真。TempleOS風に640x480・16色パレットへ量子化し、フロイド・スタインバーグ法でディザリングしたドット絵調の肖像" width="176" height="176" />
+                </div>
+                <figcaption><span class="fg-red"><b>FIG.1</b></span> Gen Taguchi のプロフィール写真。16色しかないので肌色は赤と灰色で代用されている。神の設計通りである。</figcaption>
+              </figure>
+              <div class="proftext">
+                <h2 class="profname">GEN TAGUCHI</h2>
+                <p><span class="hl-cyan"><b>DRUMMER</b></span> ポケット重視のグルーヴドラマー。速さより深さ、派手さより沈み込み。歌の後ろで黙って重心を支配するタイプの叩き方をする。</p>
+              </div>
+            </div>
+            <table class="spec">
+              <tr><th>GENRES</th><td>Groove / R&amp;B / Soul / Funk / J-Pop</td></tr>
+              <tr><th>STYLE</th><td>Pocket first. 深いポケット、歌うフィル、無駄な音は1音も置かない。</td></tr>
+              <tr><th>FAVORITE DRUMMERS</th><td>Nick Van Gelder / Jeff Porcaro / Ed Greene / Gary Mallaber</td></tr>
+              <tr><th>BASE</th><td>Tokyo, Japan</td></tr>
+              <tr><th>CONTACT</th><td><span class="fg-red"><b>SNSのDMのみ。</b></span>メール・電話・住所は非公開。</td></tr>
+            </table>
+          </div>
+        </section>
+
+        <!-- ===== PLAYLIST WINDOW ===== -->
+        <section class="win overlap" id="win-playlist" aria-label="Drums by GT playlist">
+          <div class="win-bar bar-red">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/Doc/DRUMS_BY_GT.DD</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <h2 class="secttl red">DRUMS BY GT</h2>
+            <p>参加作を集めたプレイリスト <span class="cmd">"Drums by GT"</span>。聞けばわかる。説明は不要。神はランダムだが、グルーヴは必然である。</p>
+            <div class="btnrow">
+              <a class="tbtn green" href="https://open.spotify.com/playlist/3CmKoGvCwg0X1Mi9KgkLk8" target="_blank" rel="noopener">► SPOTIFY</a>
+              <a class="tbtn mag" href="https://www.youtube.com/playlist?list=PLa9Gr7oT-79g" target="_blank" rel="noopener">► YOUTUBE</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== ORACLE WINDOW ===== -->
+        <section class="win" id="win-oracle" aria-label="Oracle">
+          <div class="win-bar bar-blue">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/Adam/God/ORACLE.HC</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <h2 class="secttl mag">THE ORACLE -- 神託</h2>
+            <p>After Egypt 式。ボタンを押すと神がランダムに言葉を落とす。意味を読み取るのはお前の仕事だ。解釈違いは自己責任。</p>
+            <div class="oracle-out" id="oracleOut" aria-live="polite"><span class="fg-blue">-- GOD IS SILENT. PRESS THE BUTTON. --</span></div>
+            <div class="btnrow">
+              <button type="button" class="tbtn cyan" id="oracleBtn">✦ ASK GOD ✦</button>
+            </div>
+            <p class="oracle-meta">TRANSMISSIONS RECEIVED: <span id="oracleCount">0</span> / ENTROPY SOURCE: Math.random() / PRIEST: NONE</p>
+          </div>
+        </section>
+
+        <!-- ===== LINKS WINDOW ===== -->
+        <section class="win" id="win-links" aria-label="Links">
+          <div class="win-bar bar-gray">
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+            <div class="win-title">::/Doc/LINKS.DD</div>
+            <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+          </div>
+          <div class="win-body">
+            <h2 class="secttl brown">LINKS -- 外部への扉</h2>
+            <ul class="dol">
+              <li>INSTAGRAM: $LK,"<a class="dl" href="https://www.instagram.com/good_potato2/" target="_blank" rel="noopener">@good_potato2</a>"$</li>
+              <li>X: $LK,"<a class="dl" href="https://x.com/nicepotato22" target="_blank" rel="noopener">@nicepotato22</a>"$</li>
+              <li>YOUTUBE (Mogadishu1999): $LK,"<a class="dl" href="https://www.youtube.com/@mog99-delta" target="_blank" rel="noopener">@mog99-delta</a>"$</li>
+            </ul>
+            <hr class="divider" />
+            <p><span class="cmd">CONTACT:</span> 仕事の依頼・REC・ライブサポートの相談は <span class="hl-mag"><b>SNSのDM</b></span> まで。それ以外の連絡手段は存在しない。存在しないものは探すな。</p>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <div class="footwin">
+      <section class="win" aria-label="System">
+        <div class="win-bar bar-yellow">
+          <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">_</button>
+          <div class="win-title">SYSTEM</div>
+          <button type="button" class="win-btn" data-collapse aria-label="ウィンドウを開閉">■</button>
+        </div>
+        <div class="win-body">
+          <p style="margin:0">nicepotatoOS v1.0 -- 640x480 / 16 COLORS / RING-0 ONLY / NO MOUSE REQUIRED<span class="blink fg-red"> ■</span><br />
+          <span class="tiny">このページは単一HTMLファイルで動作する。GitHub Pages にそのまま置ける。モダンなデザインガイドラインは神殿の外に置いてきた。<br />
+          Profile photo: quantized to the 16-color palette with Floyd-Steinberg dithering, exactly as God intended.</span></p>
+        </div>
+      </section>
+    </div>
+
+    <script>
+    (function(){
+      "use strict";
+
+      /* ================= SOUND (PC SPEAKER, SQUARE WAVE ONLY) ================= */
+      var soundOn = true, actx = null;
+      function ac(){
+        if(!actx){ try{ actx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ actx=null; } }
+        if(actx && actx.state === "suspended"){ actx.resume(); }
+        return actx;
+      }
+      function beep(freq, dur, vol, type){
+        if(!soundOn) return;
+        var c = ac(); if(!c) return;
+        var o = c.createOscillator(), g = c.createGain();
+        o.type = type || "square"; o.frequency.value = freq;
+        g.gain.setValueAtTime(vol || 0.05, c.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + (dur||0.08));
+        o.connect(g); g.connect(c.destination);
+        o.start(); o.stop(c.currentTime + (dur||0.08));
+      }
+      var sndBtn = document.getElementById("soundToggle");
+      sndBtn.addEventListener("click", function(){
+        soundOn = !soundOn;
+        sndBtn.textContent = "SOUND: " + (soundOn ? "ON" : "OFF");
+        sndBtn.setAttribute("aria-pressed", soundOn ? "true" : "false");
+        if(soundOn) beep(880, .07, .05);
+      });
+
+      /* ================= CLOCK ================= */
+      var clockEl = document.getElementById("clock");
+      function tickClock(){
+        try{
+          clockEl.textContent = new Date().toLocaleTimeString("ja-JP", { timeZone:"Asia/Tokyo", hour12:false }) + " JST";
+        }catch(e){ clockEl.textContent = new Date().toLocaleTimeString(); }
+      }
+      tickClock(); setInterval(tickClock, 1000);
+
+      /* ================= WINDOWS: FRONT / COLLAPSE / DRAG ================= */
+      var zTop = 10;
+      function toFront(w){ zTop++; w.style.zIndex = zTop; }
+      var wins = document.querySelectorAll(".win");
+      Array.prototype.forEach.call(wins, function(w){
+        w.addEventListener("pointerdown", function(){ toFront(w); });
+        Array.prototype.forEach.call(w.querySelectorAll("[data-collapse]"), function(b){
+          b.addEventListener("click", function(ev){
+            ev.stopPropagation();
+            w.classList.toggle("collapsed");
+            beep(w.classList.contains("collapsed") ? 220 : 440, .05, .04);
+          });
+        });
+        var bar = w.querySelector(".win-bar");
+        var dragging = false, sx = 0, sy = 0, ox = 0, oy = 0;
+        bar.addEventListener("pointerdown", function(e){
+          if(e.target.closest("button")) return;
+          dragging = true; sx = e.clientX; sy = e.clientY;
+          ox = parseFloat(w.getAttribute("data-dx") || "0");
+          oy = parseFloat(w.getAttribute("data-dy") || "0");
+          try{ bar.setPointerCapture(e.pointerId); }catch(err){}
+        });
+        bar.addEventListener("pointermove", function(e){
+          if(!dragging) return;
+          var dx = ox + (e.clientX - sx), dy = oy + (e.clientY - sy);
+          w.setAttribute("data-dx", dx); w.setAttribute("data-dy", dy);
+          w.style.transform = "translate(" + dx + "px," + dy + "px)";
+        });
+        function endDrag(){ dragging = false; }
+        bar.addEventListener("pointerup", endDrag);
+        bar.addEventListener("pointercancel", endDrag);
+        bar.addEventListener("dblclick", function(e){
+          if(e.target.closest("button")) return;
+          w.removeAttribute("data-dx"); w.removeAttribute("data-dy");
+          w.style.transform = "";
+        });
+      });
+
+      /* ================= ORACLE (AFTER EGYPT STYLE) ================= */
+      var WORDS = ("king priest temple oracle random divine covenant prophet hymn psalm angel demon glory sacrifice altar incense scroll tablet commandment revelation spirit ghost holy sacred blessed cursed chosen anointed witness miracle plague locust flood pillar cloud fire thunder trumpet shout sing dance drum snare kick hihat cymbal groove pocket funk soul rhythm tempo beat measure song band stage light night city river desert mountain valley ocean storm wind rain snow star moon sun earth sky potato nice golden fried CIA glow dark see drive run elephant monkey donkey camel horse lion tiger eagle snake fish bread wine oil honey milk salt stone iron gold silver copper bronze wood").split(" ");
+      var WORDS_JP = ["神","芋","太鼓","溝","魂","祈り","沈黙","必然","偶然","王","祭司","神殿","啓示","審判","祝福","深淵","光","闇","走れ","轢くな","聞け","叩け","踊れ","歌え","黙れ"];
+      var PALETTE = ["#0000AA","#AA0000","#AA00AA","#00AA00","#AA5500","#000000","#5555FF","#FF5555"];
+      var oBtn = document.getElementById("oracleBtn"),
+          oOut = document.getElementById("oracleOut"),
+          oCnt = document.getElementById("oracleCount"),
+          oBusy = false, oTotal = 0;
+      function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+      function askGod(){
+        if(oBusy) return;
+        oBusy = true; oBtn.disabled = true;
+        oOut.innerHTML = "";
+        var n = 10 + Math.floor(Math.random()*14), i = 0;
+        var lead = document.createElement("span");
+        lead.className = "fg-red"; lead.style.fontWeight = "bold";
+        lead.textContent = "GOD SAYS: ";
+        oOut.appendChild(lead);
+        var timer = setInterval(function(){
+          var s = document.createElement("span");
+          s.className = "w";
+          s.style.color = pick(PALETTE);
+          var word = (Math.random() < 0.22) ? pick(WORDS_JP) : pick(WORDS);
+          s.textContent = word;
+          oOut.appendChild(s);
+          oOut.appendChild(document.createTextNode(" "));
+          beep(180 + Math.random()*900, .05, .028);
+          i++;
+          if(i >= n){
+            clearInterval(timer);
+            var end = document.createElement("span");
+            end.className = "fg-blue";
+            end.textContent = ". -- END OF TRANSMISSION --";
+            oOut.appendChild(end);
+            beep(1320, .12, .05);
+            oTotal++; oCnt.textContent = oTotal;
+            oBusy = false; oBtn.disabled = false;
+          }
+        }, 95);
+      }
+      oBtn.addEventListener("click", askGod);
+
+      /* ================= HOLY RHYTHM ================= */
+      var cv = document.getElementById("game"), ctx = cv.getContext("2d");
+      var W = cv.width, H = cv.height, LINE = 262, TRAVEL = 1150;
+      var NOTE_COLS = ["#55FFFF","#FF55FF","#FFFF55","#55FF55","#FF5555","#5555FF"];
+      var elScore = document.getElementById("gScore"), elCombo = document.getElementById("gCombo"),
+          elMax = document.getElementById("gMax"), elJudge = document.getElementById("gJudge"),
+          btnStart = document.getElementById("gStart"), btnHit = document.getElementById("gHit");
+      var G = null;
+      function newGame(){
+        var bpm = 108, beat = 60000 / bpm, t0 = performance.now() + 900;
+        var notes = [], total = 48;
+        for(var i = 0; i < total; i++){
+          notes.push({ t: t0 + i * beat, st: 0 });
+          if(i >= 16 && i % 4 === 2) notes.push({ t: t0 + i * beat + beat / 2, st: 0 });
+          if(i >= 32 && i % 8 === 6) notes.push({ t: t0 + i * beat + beat / 2, st: 0 });
+        }
+        return { notes: notes, end: t0 + total * beat + 900, score: 0, combo: 0, max: 0,
+                 hits: 0, judged: 0, judge: "", judgeT: 0, flash: 0, run: true };
+      }
+      function drawGame(now){
+        ctx.fillStyle = "#000000"; ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "#00AAAA"; ctx.lineWidth = 1;
+        for(var gy = 0; gy < H; gy += 26){ ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke(); }
+        ctx.fillStyle = "#FFFF55"; ctx.fillRect(0, LINE, W, 4);
+        ctx.fillStyle = "#55FFFF";
+        ctx.font = "16px VT323, monospace"; ctx.textAlign = "left";
+        ctx.fillText("▼ HIT LINE ▼", 8, LINE - 8);
+        var cx = W / 2;
+        ctx.strokeStyle = "#AAAAAA"; ctx.strokeRect(cx - 26, LINE - 10, 52, 24);
+        if(!G){
+          ctx.fillStyle = "#55FF55"; ctx.font = "30px VT323, monospace"; ctx.textAlign = "center";
+          ctx.fillText("HOLY RHYTHM", cx, 120);
+          ctx.fillStyle = "#FFFFFF"; ctx.font = "20px VT323, monospace";
+          ctx.fillText("PRESS START. THEN HIT SPACE ON THE LINE.", cx, 158);
+          ctx.fillStyle = "#FF55FF";
+          ctx.fillText("GOD IS WATCHING YOUR POCKET.", cx, 186);
+          return;
+        }
+        if(G.flash > 0){
+          ctx.fillStyle = "rgba(255,255,85," + (G.flash * 0.35) + ")";
+          ctx.fillRect(0, LINE - 12, W, 28);
+          G.flash -= 0.08;
+        }
+        for(var i = 0; i < G.notes.length; i++){
+          var nt = G.notes[i];
+          if(nt.st !== 0) continue;
+          var dt = nt.t - now;
+          if(dt > TRAVEL) continue;
+          var y = LINE - (dt / TRAVEL) * LINE;
+          if(y < -30) continue;
+          ctx.fillStyle = NOTE_COLS[i % NOTE_COLS.length];
+          ctx.fillRect(cx - 20, y - 11, 40, 22);
+          ctx.strokeStyle = "#FFFFFF"; ctx.lineWidth = 2;
+          ctx.strokeRect(cx - 20, y - 11, 40, 22);
+          ctx.lineWidth = 1;
+        }
+        if(G.judge && now - G.judgeT < 650){
+          ctx.font = "34px VT323, monospace"; ctx.textAlign = "center";
+          ctx.fillStyle = G.judge === "PERFECT" ? "#FFFF55" : G.judge === "MISS" ? "#FF5555" : "#55FF55";
+          ctx.fillText(G.judge, cx, 84);
+        }
+        if(!G.run){
+          ctx.fillStyle = "rgba(0,0,0,0.78)"; ctx.fillRect(0, 0, W, H);
+          ctx.textAlign = "center";
+          ctx.fillStyle = "#FFFF55"; ctx.font = "36px VT323, monospace";
+          ctx.fillText("FINISH", cx, 108);
+          ctx.fillStyle = "#FFFFFF"; ctx.font = "24px VT323, monospace";
+          var acc = G.judged ? Math.round(100 * G.hits / G.judged) : 0;
+          var rank = acc >= 90 ? "S -- GOD APPROVES" : acc >= 75 ? "A -- BLESSED POCKET" : acc >= 55 ? "B -- KEEP PRAYING" : "C -- REPENT AND RETRY";
+          ctx.fillText("SCORE " + G.score, cx, 152);
+          ctx.fillText("ACCURACY " + acc + "%", cx, 186);
+          ctx.fillStyle = "#55FF55";
+          ctx.fillText("RANK " + rank, cx, 228);
+        }
+      }
+      function loop(now){
+        if(G){
+          for(var i = 0; i < G.notes.length; i++){
+            var nt = G.notes[i];
+            if(nt.st === 0 && now - nt.t > 210){
+              nt.st = 2; G.combo = 0; G.judged++;
+              G.judge = "MISS"; G.judgeT = now;
+              elJudge.textContent = "MISS"; elCombo.textContent = "0";
+              beep(98, .12, .05, "sawtooth");
+            }
+          }
+          if(G.run && now > G.end){
+            G.run = false;
+            elJudge.textContent = "FINISH";
+            btnStart.disabled = false; btnStart.textContent = "► RESTART";
+            beep(784, .1, .05); setTimeout(function(){ beep(1046, .16, .05); }, 110);
+          }
+        }
+        drawGame(now);
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+      function judge(txt, pts, f){
+        if(!G) return;
+        G.judge = txt; G.judgeT = performance.now(); G.flash = 1;
+        elJudge.textContent = txt;
+        if(pts > 0){
+          G.combo++; G.hits++; if(G.combo > G.max) G.max = G.combo;
+          G.score += pts;
+          beep(f, .07, .06);
+        } else { G.combo = 0; beep(98, .12, .05, "sawtooth"); }
+        G.judged++;
+        elScore.textContent = G.score; elCombo.textContent = G.combo; elMax.textContent = G.max;
+      }
+      function hit(){
+        if(!G || !G.run) return;
+        var now = performance.now(), best = null, bd = 1e9;
+        for(var i = 0; i < G.notes.length; i++){
+          var nt = G.notes[i]; if(nt.st !== 0) continue;
+          var d = Math.abs(nt.t - now);
+          if(d < bd){ bd = d; best = nt; }
+        }
+        if(!best || bd > 210){ judge("MISS", 0); return; }
+        best.st = 1;
+        if(bd <= 62) judge("PERFECT", 300, 1180);
+        else if(bd <= 125) judge("GREAT", 100, 784);
+        else judge("OK", 50, 523);
+      }
+      btnStart.addEventListener("click", function(){
+        ac();
+        G = newGame();
+        elScore.textContent = "0"; elCombo.textContent = "0"; elMax.textContent = "0";
+        elJudge.textContent = "READY...";
+        btnStart.disabled = true; btnStart.textContent = "PLAYING...";
+        beep(660, .07, .05);
+      });
+      btnHit.addEventListener("click", function(){ ac(); hit(); });
+      cv.addEventListener("pointerdown", function(e){ e.preventDefault(); ac(); hit(); });
+      document.addEventListener("keydown", function(e){
+        if(e.code === "Space"){
+          var t = e.target;
+          if(t && (t.tagName === "BUTTON" || t.tagName === "A" || t.tagName === "INPUT")) return;
+          e.preventDefault();
+          if(G && G.run) hit();
+        }
+      });
+    })();
+    </script>
+  </body>
+</html>
